@@ -2,16 +2,20 @@ import { Typography } from '@mui/material';
 import React from 'react'
 import './Header.css';
 import TeamChooser from './TeamChooser';
+import { ThemeProvider, useTheme } from '@mui/material/styles';
+// import {theme} from './App'
+
 const Header = () => {
-    
+  // const theme = useTheme();
   return (
     <div className = "Header">
         <Typography variant = "h2" style = {{textAlign: "center"}}>
-            VataDiz
+          RLCS WINTER MAJOR
         </Typography>
-        <Typography components = "div">
-        Lorem ipsum dolor sit amet. Vel voluptas eligendi est minima quasi aut similique natus. Qui architecto amet hic accusam
+        <Typography variant = "h5" style = {{textAlign: "center"}}>
+          Team Behavioral Analysis Visualization 
         </Typography>
+
         <br/>
         <TeamChooser/>
     </div>

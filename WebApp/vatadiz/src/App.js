@@ -2,7 +2,28 @@ import Header from './Header';
 import './App.css';
 import Content from './Content';
 import * as React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Box, CssBaseline } from '@mui/material';
 
+// https://mui.com/material-ui/customization/color/
+export const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: "#1a237e",
+      light: "#534bae",
+      dark: "#000051",
+      contrastText: "#ffffff"
+    },
+    secondary: {
+      main: "#bbdefb",
+      light: "#eeffff",
+      dark: "#8aacc8",
+      contrastText: "#263238"
+    },
+  },
+})
+  
 function handleContext(state, action) {
   let newState = JSON.parse(JSON.stringify(state))
   console.log(state,action)
@@ -35,12 +56,18 @@ function App() {
   
 
   return (
-    <div className="App">
+    <ThemeProvider theme={theme}> 
+      <CssBaseline/>
       <appContext.Provider value={{ state, dispatcher }}>
-        <Header />
-        <Content state={state} />
-      </appContext.Provider>
-    </div>
+        <main>
+          <Box className="App">
+              <Header />
+              <Content state={state} />
+          </Box>
+        </main>
+     </appContext.Provider>
+        
+    </ThemeProvider>
   );
 }
 
