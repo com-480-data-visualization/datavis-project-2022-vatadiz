@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/datavis-project-2022-vatadiz/static/css/main.9ad12e25.css",
-    "main.js": "/datavis-project-2022-vatadiz/static/js/main.cb0b32f6.js",
+    "main.css": "/datavis-project-2022-vatadiz/static/css/main.99b9fba6.css",
+    "main.js": "/datavis-project-2022-vatadiz/static/js/main.a914176d.js",
     "static/js/787.e7cde111.chunk.js": "/datavis-project-2022-vatadiz/static/js/787.e7cde111.chunk.js",
     "index.html": "/datavis-project-2022-vatadiz/index.html",
-    "main.9ad12e25.css.map": "/datavis-project-2022-vatadiz/static/css/main.9ad12e25.css.map",
-    "main.cb0b32f6.js.map": "/datavis-project-2022-vatadiz/static/js/main.cb0b32f6.js.map",
+    "main.99b9fba6.css.map": "/datavis-project-2022-vatadiz/static/css/main.99b9fba6.css.map",
+    "main.a914176d.js.map": "/datavis-project-2022-vatadiz/static/js/main.a914176d.js.map",
     "787.e7cde111.chunk.js.map": "/datavis-project-2022-vatadiz/static/js/787.e7cde111.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9ad12e25.css",
-    "static/js/main.cb0b32f6.js"
+    "static/css/main.99b9fba6.css",
+    "static/js/main.a914176d.js"
   ]
 }
