@@ -18,7 +18,7 @@ Now, the user can select one match from all the matches the team has played and 
 
 `fig 2` shows an initial outline of what we just described, i.e. how we want our website to be constructed. As it can be seen, we plan on having a single page application which will allow the users to "zoom in" the visualization in order to explore along the 3 axes we defined in milestone 1. Several  small sketches of the visualizations we want to present are included in the figure, but we plan to create some others, depending on how we build our metric.
 
-![fig 2](assets/fig2.png "website overview")
+![fig 2](assets/fig2a.png "website overview")
 
 ## Additional extra ideas
 
