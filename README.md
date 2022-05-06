@@ -4,25 +4,37 @@
 
 ## Our Project
 
-The goal of our various visualizations is to learn new insights about teams and the games they played based on a "risk" metric that we're going to implement using the data at hand. 
+The goal of our various visualizations is to learn new insights about teams' behavior during the competition. We will try to show a "risk" metric using the data at hand. 
 
+Upon arrival on our website, the user will be presented with an introduction about our project and our goals. Then, we would like to visually explain how we defined our metric and why we decided on this approach over another one. This could be nicely achieved by letting the user interact with our metric variables (eg. by letting them change the coefficients of some variables) and displaying how each team score varies with respect to the modified variables. 
+Visualizing our metric concept is part of our MVP since understanding it is essential to explore the rest of the website.
+Extra idea 1: perhaps here some textual visualization could be the right fit, eg. by letting the font size grow bigger with the score value or thinner if it doesn't reflect well the actual team aggressivity (complex at the objective metric evaluation level). 
 
-Upon arrival on our website, the user will be presented with an introduction about our project and our goals. Then, we would like to visually explain how we defined our metric and why we decided this approach over another one. This could be nicely achieved by letting the user interact with our metric variables (eg. by letting them change the coefficients of some variables) and displaying how each's team score varies with respect to the modified variables. Perhaps here some textual visualization could be the right fit, eg. by letting the score font size grow bigger if the score is large but also thinner if it doesn't reflect well the actual agressivity of the team. Depending on how interesting for the user this turns out to be, this might be an extra idea. However, visualizing how our metric is built is part of our MVP as understanding the metric is quitre important to understand what happens when playing around it.
-
-`fig 1` shows a possible initisl implementation for this.
+`fig 1` shows a possible initial implementation for this.
  
  ![fig 1](assets/fig1.jpg "metric explanation")
  
-Then, once the introduction part is read, the user will be able to select a team from the RLCS Winter Major 21-22 and see their run throughout the tournament. By picking a team, the website will split itself into 2 parts, one showing a timeline of the matches played during the tournament (with, say, a red dot if the match was lost or a green dot if won) which is itself lightly split into a "group stage" part and a "playoff stage" one, as per the 3rd axis of our analysis from milestone 1. The second part will contain a few general stats for the team, such as their current ranking in the world, their average score for our metric over the tournament and so on. 
-Now, the user can select one match from all the matches the team has played and a similar view will be displayed, this time showing the timeline of the BO as well as more precise statistics about the BO, associated with their relevant visualizations. All of this is part of our MVP. Finally, the user will be able to select a single game from the BO and we want to do two things : firstly, in a similar fashion, we want to show some stats and their relevant visualizations about this particular game. A nice extra idea we would like to implement though would be to see such stats and visualization on a timeline of the game. For example, we would like to create a map of each team's positioning over time, or a timeline with our metric represented for each team as a density. This would also be part of our MVP. Adding interaction from the user so that they can “visualize” how important each feature is could be an extra idea. The complexity of the visualizations here will be considered as an extra as well: basic stats and visualizations are core and thus in our MVP but anything more complex such as a visualization that varies with the user input is considered extra.
+The user will then be able to select a team from the RLCS Winter Major 21-22 and see their run throughout the tournament. The website structure will follow an iterative cascade design where you pick a team, then a match, then a game and see the display change interactively.
 
-`fig 2` shows an initial outline of what we just described, i.e. how we want our website to be constructed. As it can be seen, we plan on having a single page application which will allow the users to "zoom in" the visualization in order to explore along the 3 axes we defined in milestone 1. Several  small sketches of the visualizations we want to present are included in the figure, but we plan to create some others, depending on how we build our metric.
+By picking a team, a block will split into parts:
+\* The first part is showing a timeline of the matches played during the tournament (with, say, a red dot if the match was lost or a green dot if won). This timeline depicts the tournament stages: a "group stage" on the left and a "playoff stage" on the right. It reflects the 3rd axis of our analysis from milestone 1. 
+\* The second part will contain a few general stats for the team, such as their current ranking in the world, their average score for our metric over the tournament, and so on. 
+
+The user can then select one match among which the team played. Similarly to the team selection, a view will be displayed, this time showing the timeline of the BO match ("best-of 3/5/7 format" most of the time) accompanied by additional visualization about the match. 
+All of this is part of our MVP. 
+
+Finally, the user will be able to select a single game from the BO. 
+Once again, we display statistics and their relevant visualizations about this particular game. 
+Extra idea 2: see such statistics and visualizations on a real-time timeline of the game. For example, creating a map of each team's positions or plotting our metric as a density over game time.  
+Extra idea 3: Propagating the user choices of the metric design through all graphs interactively (if not, it will use only our metric).
+
+`fig 2` shows an initial outline of what we just described, i.e. how we want our website to be constructed. As it can be seen, we plan on having a single-page application that will allow the users to "climb down" through visualizations to explore our subject along the 3 axes we defined in milestone 1. Several small sketches of the visualizations we want to present are included in the figure, but more will be designed during development.
 
 ![fig 2](assets/fig2a.png "website overview")
 
 ## Additional extra ideas
 
-Some other fun yet challenging ideas would be adding the player point of view, i.e. adding another reading layer by allowing visualizations based on players instead of teams. This would provide higher granularity and a better understanding of how teams deal with risk-management in intern because we would be observing the internal interactions as well instead of simply considering a team as a black box.
+A global extra idea would be to add the player's axis, i.e, allowing visualizations based on players instead of teams. This would provide higher granularity and a better understanding of how teams deal with internal risk management. We would be observing the internal interactions as well instead of simply considering a team as a black box.
 
 ## What we will need 
 
@@ -33,13 +45,12 @@ Based on what we state above and what we show in fig2, we believe the contents o
 * Designing (L7.1)
 * Do & Don't (L7.2)
 * Maps (L8.1)
-* Text viz (L9)
 * Tabular data (L11.1)
 * Storytelling (12.1)
 
 ## [Website prototype](https://com-480-data-visualization.github.io/datavis-project-2022-vatadiz/)
 
-The website is still in its early stages and is a roughh skeleton of what we would like to do. One could expect a well-polished version on what is depicted in [figure 2](fig2).
+The website is still in its early stages and is a rough skeleton of what we would like to do. One could expect a well-polished version of what is depicted in [figure 2](fig2).
 
 
 # Milestone 1
