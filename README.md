@@ -11,14 +11,14 @@ Upon arrival on our website, the user will be presented with an introduction abo
 
 `fig 1` shows a possible initisl implementation for this.
  
- ![fig 1](fig_1_metric_visu.jpg "metric explanation")
+ ![fig 1](fig1.jpg "metric explanation")
  
 Then, once the introduction part is read, the user will be able to select a team from the RLCS Winter Major 21-22 and see their run throughout the tournament. By picking a team, the website will split itself into 2 parts, one showing a timeline of the matches played during the tournament (with, say, a red dot if the match was lost or a green dot if won) which is itself lightly split into a "group stage" part and a "playoff stage" one, as per the 3rd axis of our analysis from milestone 1. The second part will contain a few general stats for the team, such as their current ranking in the world, their average score for our metric over the tournament and so on. 
 Now, the user can select one match from all the matches the team has played and a similar view will be displayed, this time showing the timeline of the BO as well as more precise statistics about the BO, associated with their relevant visualizations. All of this is part of our MVP. Finally, the user will be able to select a single game from the BO and we want to do two things : firstly, in a similar fashion, we want to show some stats and their relevant visualizations about this particular game. A nice extra idea we would like to implement though would be to see such stats and visualization on a timeline of the game. For example, we would like to create a map of each team's positioning over time, or a timeline with our metric represented for each team as a density. This would also be part of our MVP. Adding interaction from the user so that they can “visualize” how important each feature is could be an extra idea. The complexity of the visualizations here will be considered as an extra as well: basic stats and visualizations are core and thus in our MVP but anything more complex such as a visualization that varies with the user input is considered extra.
 
 `fig 2` shows an initial outline of what we just described, i.e. how we want our website to be constructed. As it can be seen, we plan on having a single page application which will allow the users to "zoom in" the visualization in order to explore along the 3 axes we defined in milestone 1. Several  small sketches of the visualizations we want to present are included in the figure, but we plan to create some others, depending on how we build our metric.
 
-![fig 2](brave_6UmBmaqUbl.png "website overview")
+![fig 2](fig2.png "website overview")
 
 ## Additional extra ideas
 
