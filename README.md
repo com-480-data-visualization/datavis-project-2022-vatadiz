@@ -17,8 +17,8 @@ Extra idea 1: perhaps here some textual visualization could be the right fit, eg
 The user will then be able to select a team from the RLCS Winter Major 21-22 and see their run throughout the tournament. The website structure will follow an iterative cascade design where you pick a team, then a match, then a game and see the display change interactively.
 
 By picking a team, a block will split into parts:
-\* The first part is showing a timeline of the matches played during the tournament (with, say, a red dot if the match was lost or a green dot if won). This timeline depicts the tournament stages: a "group stage" on the left and a "playoff stage" on the right. It reflects the 3rd axis of our analysis from milestone 1. 
-\* The second part will contain a few general stats for the team, such as their current ranking in the world, their average score for our metric over the tournament, and so on. 
+* The first part is showing a timeline of the matches played during the tournament (with, say, a red dot if the match was lost or a green dot if won). This timeline depicts the tournament stages: a "group stage" on the left and a "playoff stage" on the right. It reflects the 3rd axis of our analysis from milestone 1. 
+* The second part will contain a few general stats for the team, such as their current ranking in the world, their average score for our metric over the tournament, and so on. 
 
 The user can then select one match among which the team played. Similarly to the team selection, a view will be displayed, this time showing the timeline of the BO match ("best-of 3/5/7 format" most of the time) accompanied by additional visualization about the match. 
 All of this is part of our MVP. 
