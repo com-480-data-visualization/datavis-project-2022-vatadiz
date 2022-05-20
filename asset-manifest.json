@@ -1,15 +1,28 @@
 {
   "files": {
-    "main.css": "/datavis-project-2022-vatadiz/static/css/main.99b9fba6.css",
-    "main.js": "/datavis-project-2022-vatadiz/static/js/main.a914176d.js",
+    "main.css": "/datavis-project-2022-vatadiz/static/css/main.276af93f.css",
+    "main.js": "/datavis-project-2022-vatadiz/static/js/main.13fc8c30.js",
     "static/js/787.e7cde111.chunk.js": "/datavis-project-2022-vatadiz/static/js/787.e7cde111.chunk.js",
+    "static/media/renegades.png": "/datavis-project-2022-vatadiz/static/media/renegades.2a39c2c4694ce7d8ff80.png",
+    "static/media/dignitas.png": "/datavis-project-2022-vatadiz/static/media/dignitas.453bf1e33c1d3492cf8f.png",
+    "static/media/team_queso.png": "/datavis-project-2022-vatadiz/static/media/team_queso.b70d98a9845e78a31ad3.png",
+    "static/media/detonator.png": "/datavis-project-2022-vatadiz/static/media/detonator.42e4518b1e092574c5be.png",
+    "static/media/g2_esports.png": "/datavis-project-2022-vatadiz/static/media/g2_esports.dbde30d1706bda8c29f5.png",
+    "static/media/furia_esports.png": "/datavis-project-2022-vatadiz/static/media/furia_esports.0ca4edbde0ccc36840fd.png",
+    "static/media/pioneers.png": "/datavis-project-2022-vatadiz/static/media/pioneers.c6970153842c381ca114.png",
+    "static/media/evil_geniuses.png": "/datavis-project-2022-vatadiz/static/media/evil_geniuses.333c8684227819a66535.png",
+    "static/media/team_bds.png": "/datavis-project-2022-vatadiz/static/media/team_bds.586e9b7e198b63d40fca.png",
+    "static/media/faze_clan.png": "/datavis-project-2022-vatadiz/static/media/faze_clan.b505f993ddb70740e711.png",
+    "static/media/team_secret.png": "/datavis-project-2022-vatadiz/static/media/team_secret.eec316222fcfda608dcc.png",
+    "static/media/spacestation_gaming.png": "/datavis-project-2022-vatadiz/static/media/spacestation_gaming.7e34eb7a2b9160242e56.png",
+    "static/media/nrg_esports.png": "/datavis-project-2022-vatadiz/static/media/nrg_esports.6186f068214ebde36bc3.png",
     "index.html": "/datavis-project-2022-vatadiz/index.html",
-    "main.99b9fba6.css.map": "/datavis-project-2022-vatadiz/static/css/main.99b9fba6.css.map",
-    "main.a914176d.js.map": "/datavis-project-2022-vatadiz/static/js/main.a914176d.js.map",
+    "main.276af93f.css.map": "/datavis-project-2022-vatadiz/static/css/main.276af93f.css.map",
+    "main.13fc8c30.js.map": "/datavis-project-2022-vatadiz/static/js/main.13fc8c30.js.map",
     "787.e7cde111.chunk.js.map": "/datavis-project-2022-vatadiz/static/js/787.e7cde111.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.99b9fba6.css",
-    "static/js/main.a914176d.js"
+    "static/css/main.276af93f.css",
+    "static/js/main.13fc8c30.js"
   ]
 }
