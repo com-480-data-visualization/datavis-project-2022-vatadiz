@@ -1,49 +1,66 @@
 import React, { useEffect, useContext } from 'react'
-import { Card } from '@mui/material'
 import * as d3 from 'd3'
 import { appContext } from './App';
-import { getTeam} from './ProcessedDataset'
+import { getTeam, getTeamMatch, computeGameMetric, computeMatchMetric} from './ProcessedDataset'
 
 function drawTimeline(domElement, data, dispatcher) {
     const domObject = d3.select(domElement)
     domObject.selectAll("*").remove();
-    const chart = domObject.append('svg').attr('width', "90%").attr('height', "100%")
+    const chart = domObject.append('svg')
+                            .attr("preserveAspectRatio", "xMidYMid slice")
+                            .attr("viewBox", "0 0 1000 200")
+                            .classed("svg-content-responsive", true)
     const triangle = d3.symbol().type(d3.symbolTriangle).size(250)
-    const endOfLine = 95 // in percentage of its parent size
-    const middleBarLength = 60
-    const tickWidth = 3
+    const middleBarLength = 100
+    const tickProperties = {width: 2, height: 20};
+    
+    const winColor = "darkgreen"
+    const lossColor = "darkred"
+    const chartWidth = chart.attr("viewBox").split(" ")[2] - 0;
+    const chartHeight = chart.attr("viewBox").split(" ")[3] - 0;
+    
+    const xRange = {left:0.05*chartWidth, right: 0.95*chartWidth};
+    const yRange = {down:0.95*chartHeight, up: 0.05*chartHeight}
+
+    var uix = d3.scaleLinear()
+                .domain([0, 100])
+                .range([xRange.left, xRange.right]);
+    var uiy = d3.scaleLinear()
+                .domain([0, 100])
+                .range([yRange.up, yRange.down]);
+
+    const timelineProperties = {y: uiy(80)};
+
+    var x = d3.scaleLinear()
+                .domain([-0.5, data.points.length])
+                .range([xRange.left, xRange.right]);
+    var y = d3.scaleLinear()
+                .domain([0, d3.max(data.points.map(d => d.metric))])
+                .range([timelineProperties.y, uiy(5)]);
+
     // timeline bar
-
-
-
     chart.append("line")
-        .style("stroke", "black")
-        .style("stroke-width", 5)
-        .attr("x1", 0)
-        .attr("y1", "50%")
-        .attr("x2", `${endOfLine}%`)
-        .attr("y2", "50%")
+        .style("stroke", "black").style("stroke-width", 5)
+        .attr("x1", xRange.left).attr("y1", timelineProperties.y)
+        .attr("x2", xRange.right).attr("y2", timelineProperties.y)
         .style("backggroupStage-color", "black")
 
-    // Playoff/ groupStages separator
-    chart.append("line")
-        .style("stroke", "darkgrey")
-        .style("stroke-width", 3)
-        .attr("x1", `${endOfLine / 2}%`)
-        .attr("y1", `${50 - middleBarLength / 2}%`)
-        .attr("x2", `${endOfLine / 2}%`)
-        .attr("y2", `${50 + middleBarLength / 2}%`)
+    if (data.separation >= 0){
+        // Playoff/ groupStages separator
+        chart.append("line")
+            .style("stroke", "darkgrey").style("stroke-width", 3)
+            .attr("x1", x(data.separation)).attr("y1", uiy(50 - middleBarLength / 2))
+            .attr("x2", x(data.separation)).attr("y2", uiy(50 + middleBarLength / 2));
+
+    }
     // timeline arrow tip 
     chart.append('svg')
-        .attr('width', 50)
-        .attr('height', 50)
-        .attr("x", `${endOfLine}%`)
-        .attr("y", "44.5%")
+        .attr('width', 50).attr('height', 50)
+        .attr("x",xRange.right).attr("y", timelineProperties.y - 8)
         .append('path')
         .attr("d", triangle)
-        .style("fill", "red")
+        .style("fill", "black")
         .attr('transform', "translate(0,8 ) rotate(90)")
-
 
     // And now the tooltip !
     var Tooltip = d3.select('body')
@@ -82,123 +99,121 @@ function drawTimeline(domElement, data, dispatcher) {
         d3.select(this)
             .style("stroke", "none")
             .style("opacity", 0.8)
-
     }
 
     var mouseclick = function (mouse, data) {
         Tooltip.style("opacity", 0)
-        dispatcher({data:data, type: "click"})
+        dispatcher({data:data.id, type: data.interactionType})
     }
-    // Now I need to draw the ticks for each game
-    const playoffData = data.playoff
-    const groupStageData = data.groupStage
-    console.log(groupStageData)
-    const winColor = "darkgreen"
-    const lossColor = "darkred"
-    const roomPlay = (endOfLine / 2) / (playoffData.length + 1)
-    const roomRound = (endOfLine / 2) / (groupStageData.length + 1)
-    // FOR THE PLAYOFFS
-    chart.selectAll("#playoff-ticks")
-        .data(playoffData)
+    
+    chart.selectAll("#event-ticks")
+        .data(data.points)
         .enter()
         .append("rect")
-        .attr('id', "playoff-ticks")
-        .attr("x", (d, i) => {
-            const posX = endOfLine / 2 + (i + 1) * roomPlay
-            return `${posX}%`
-        })
-        .attr("y", '40%')
-        .attr("width", tickWidth)
-        .attr("height", 30)
+        .attr('id', "event-ticks")
+        .attr("x", d => x(d.number)).attr("y", timelineProperties.y - tickProperties.height/2)
+        .attr("width", tickProperties.width)
+        .attr("height", tickProperties.height)
+    
     //// Win-loss Circles
-
-    chart.selectAll("#playoff-circle    ")
-        .data(playoffData)
+    chart.selectAll("#event-circle")
+        .data(data.points)
         .enter()
         .append("circle")
-        .attr('id', "playoff-circle")
-        .attr("cx", (d, i) => {
-            const posX = endOfLine / 2 + (i + 1) * roomPlay + 0.25
-            return `${posX}%`
-        })
-        .attr("cy", '35%')
+        .attr('id', "event-circle")
+        .attr("cx", d => x(d.number)).attr("cy", timelineProperties.y + tickProperties.height)
         .attr("r", 10)
-        .attr("fill", (d) => d.won ? winColor : lossColor)
+        .attr("fill", d => d.won ? winColor : lossColor)
         .attr("height", 30)
-    // For the Rounds
-
-    chart.selectAll("#groupStage-ticks")
-        .data(groupStageData)
-        .enter()
-        .append("rect")
-        .attr('id', "groupStage-ticks")
-        .attr("x", (d, i) => {
-            const posX = (i + 1) * roomRound
-            return `${posX}%`
-        })
-        .attr("y", '40%')
-        .attr("width", tickWidth)
-        .attr("height", 30)
-
-    chart.selectAll("#groupStage-circle")
-        .data(groupStageData)
-        .enter()
-        .append("circle")
-        .attr('id', "groupStage-circle")
-        .attr("cx", (d, i) => {
-            const posX = (i + 1) * roomRound + 0.25
-            return `${posX}%`
-        })
-        .attr("cy", '35%')
-        .attr("r", 10)
-        .attr("fill", (d) => d.won ? winColor : lossColor)
-        .attr("height", 30)
-
-    chart.selectAll("circle")
         .on("mouseover", mouseover)
         // .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
         .on("click", mouseclick)
+    // For the Rounds
 
+        
+
+    
+    
+    var valueline = d3.line()
+        .x(d => x(d.number))
+        .y(d => y(d.metric));
+
+    chart.append("path")
+        .data([data.points])
+        .attr("class", "line")
+        .attr("d", valueline)
+        .attr("stroke", "#2e2e2e")
+        .attr("stroke-width", 2)
+        .attr("fill", "none");
 
 }
 
-
-
-const Timeline = ({state}) => {
+export const TeamTimeline = ({state}) => {
     const context = useContext(appContext);
 
     var matches = getTeam(state.team_id).matches;
 
-    // const data = {
-    //     playoff: [{ match_id: 10, won: true }, { match_id: 10, won: false }, { match_id: 10, won: true }, { match_id: 10, won: false }, { match_id: 10, won: true }, { match_id: 10, won: true }],
-    //     groupStage: [{ match_id: 10, won: true }, { match_id: 5, won: false }],
-    // }
-
     const data = {
-        playoff: [],
-        groupStage: [],
+        points: [],
+        separation: -1
     }
-    
+
+    var i = 0;
     matches.forEach(match => {
-        var entry = {match_id: match.match_id, won: match[match.selected_team].winner};
-        if (match.stage === "Group Stage")
-            data.groupStage.push(entry);
-        else if (match.stage === "Playoffs")
-            data.playoff.push(entry);
+        var entry = {id: match.match_id,
+                     number: i,
+                     won: match[match.selected_team].winner,
+                     metric: computeMatchMetric(match, match.selected_team),
+                     interactionType: "select_match_id"};
+        if (data.separation < 0 && match.stage === "Playoffs")
+            data.separation = i - 0.5
+        data.points.push(entry);
+        i++;
     })
+    if (data.separation < 0)
+        data.separation = i - 0.5;
 
     useEffect(
         () => {
-            drawTimeline(".visu", data, context.dispatcher)
+            drawTimeline(".TeamTimeline", data, context.dispatcher)
         },
     )
 
     return (
-        <Card className="Timeline" variant="outlined">
-            <div className="visu"></div>
-        </Card>
+        <div className="TeamTimeline"></div>
     )
 }
 
-export default Timeline
+export const MatchTimeline = ({state}) => {
+    const context = useContext(appContext);
+    
+    var match = getTeamMatch(state.team_id, state.match_id)
+    var games = match.games;
+    
+    const data = {
+        points: [],
+        separation: -1
+    }
+    var i = 0;
+    games.forEach(game => {
+        var entry = {id: game.game_id,
+                     number: i,
+                     won: game[match.selected_team].winner,
+                     metric: computeGameMetric(game, match.selected_team),
+                     interactionType: "select_game_id"};
+        data.points.push(entry);
+        i++;
+    })
+
+
+    useEffect(
+        () => {
+            drawTimeline(".MatchTimeline", data, context.dispatcher)
+        },
+    )
+
+    return (
+        <div className="MatchTimeline"></div>
+    )
+}

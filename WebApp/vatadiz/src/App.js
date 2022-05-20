@@ -1,5 +1,5 @@
-import Header from './Header';
 import './App.css';
+import Header from './Header';
 import Content from './Content';
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -26,16 +26,20 @@ export const theme = createTheme({
   
 function handleContext(state, action) {
   let newState = JSON.parse(JSON.stringify(state))
-  console.log(state,action)
+  // console.log(state,action)
   switch (action.type) {
-    case "teamChoose":
+    case "select_team_id":
       newState.team_id = action.data
       newState.match_id = ""
       newState.game_id = ""
       break;
-    case "click":
-      newState.match_id = action.data.match_id
+    case "select_match_id":
+      newState.match_id = action.data
+      newState.game_id = ""
       break;
+    case "select_game_id":
+        newState.game_id = action.data
+        break;
     default:
       break;
   }
@@ -61,7 +65,7 @@ function App() {
       <appContext.Provider value={{ state, dispatcher }}>
         <main>
           <Box className="App">
-              <Header />
+              <Header/>
               <Content state={state} />
           </Box>
         </main>

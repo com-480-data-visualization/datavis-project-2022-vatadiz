@@ -7,11 +7,18 @@
 }
 
 
-.Timeline{
+.TeamTimeline{
   margin:auto;
-  width: 70%;
+  width: 90%;
   vertical-align: baseline;
 }
+
+.MatchTimeline{
+  margin:auto;
+  width: 90%;
+  vertical-align: baseline;
+}
+
 .tooltip {
   position: absolute;
 }

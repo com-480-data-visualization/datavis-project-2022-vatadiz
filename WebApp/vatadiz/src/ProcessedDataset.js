@@ -1,11 +1,11 @@
 import wmajor from "./data/winter_major_data_v2.json"
-console.log(wmajor.teams[0])
+
 export var teamsMinimalist = wmajor.teams.map(
     x => { var a = {};
         a["team_id"] = x.team_id; 
         a["team_name"] = x.team_name
         return a
-    });
+});
 
 export function getTeam(team_id) {
     var i = 0;
@@ -47,3 +47,13 @@ export function getTeamMatch(team_id, match_id){
 export function getTeamGame(team_id, game_id){
     return getGame(getTeam(team_id).games, game_id);
 }
+
+export function computeMatchMetric(match, selected_team){
+    return match[selected_team].positioning_time_in_front_ball;
+}
+
+export function computeGameMetric(game, selected_team){
+    return game[selected_team].positioning_time_in_front_ball;
+}
+
+

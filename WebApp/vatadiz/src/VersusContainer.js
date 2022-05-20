@@ -14,7 +14,7 @@ export default function VersusContainer({state}) {
 
     
     const match = getTeamMatch(state.team_id, state.match_id)
-    
+
     return (
         <div>
             {/* <h2>{game.name}</h2> */}

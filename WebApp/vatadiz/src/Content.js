@@ -1,6 +1,7 @@
 import React from 'react'
-import Timeline from './Timeline'
+import {TeamTimeline, MatchTimeline} from './Timeline'
 import VersusContainer from './VersusContainer';
+import TeamChooser from './TeamChooser';
 
 const Content = ({state}) => {
   const teamSelected = state.team_id !== "";
@@ -10,10 +11,12 @@ const Content = ({state}) => {
   
   return (
     <>
-    
-      {teamSelected && <Timeline state={state}/>}
+      <TeamChooser state={state}/>
+      {teamSelected && <TeamTimeline state={state}/>}
       {teamSelected && content1}
       {matchSelected && <VersusContainer state={state}/>}
+      {matchSelected && <MatchTimeline state={state}/>}
+      {gameSelected && <div>BRAVO, VOUS AVEZ SELECTIONNÉ UNE GAME!</div>}
     </>
   )
 }
