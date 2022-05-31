@@ -35,7 +35,7 @@ function drawTeamChooser(domElement, data, dispatcher){
                 .data(data)
                 .enter()
                 .append("svg:image")
-                .attr("xlink:href", d => require(`./data/team_logos/${d.team_name.replace(" ", "_").toLowerCase()}.png`))
+                .attr("xlink:href", d => require("" + `./data/team_logos/${d.team_name.replace(" ", "_").toLowerCase()}.png`))
                 .attr("width", 50).attr("height", 50)
                 .attr("x", (d, i) => i * 65)
                 .on("mouseover", mouseover)
