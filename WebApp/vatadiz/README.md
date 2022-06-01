@@ -68,3 +68,18 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+A Faire : 
+- Construire la structure et se mettre d'accord sur ce qu'on met dedans
+- Faire la métrique et les interactions avec + le graph 
+- faire les minis vis intermediares pour les equipes les games et les matchs + evnetuellement une heat map par game 
+- normaliser les données (demander à Matthieu )
+- faire le rapport 
+
+
+
+- Faire la popup 
+- chopper les descriptions des equipes
+- ajouter un indicateur aggressivité
