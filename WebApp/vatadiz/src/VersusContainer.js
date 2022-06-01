@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react';
+import { appContext } from './App';
 import "./VersusContainer.css"
 import {getTeamMatch} from './ProcessedDataset'
 
@@ -10,10 +11,9 @@ function teamColumn(team){
         </div>
     )
 }
-export default function VersusContainer({state}) {
-
-    
-    const match = getTeamMatch(state.team_id, state.match_id)
+export default function VersusContainer() {
+    const context = useContext(appContext)
+    const match = getTeamMatch(context.state.team_id, context.state.match_id)
 
     return (
         <div>

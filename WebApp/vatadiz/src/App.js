@@ -47,30 +47,28 @@ function handleContext(state, action) {
 }
 
 const initialeState = {
-  "team_id": "",
-  "match_id": "",
-  "game_id": ""
+  team_id: "",
+  match_id: "",
+  game_id: ""
 }
+
 const appContext = React.createContext()
 
 
 function App() {
   const [state, dispatcher] = React.useReducer(handleContext, initialeState)
   
-  
-
   return (
-    <ThemeProvider theme={theme}> 
+    <ThemeProvider theme={theme}>
       <CssBaseline/>
       <appContext.Provider value={{ state, dispatcher }}>
         <main>
           <Box className="App">
               <Header/>
-              <Content state={state} />
+              <Content/>
           </Box>
         </main>
      </appContext.Provider>
-        
     </ThemeProvider>
   );
 }

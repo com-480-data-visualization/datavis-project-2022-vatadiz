@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react';
+import { appContext } from './App';
 import {TeamTimeline, MatchTimeline} from './Timeline'
 import VersusContainer from './VersusContainer';
 import TeamChooser from './TeamChooser';
 import TeamCard from './TeamCard';
-const Content = ({state}) => {
-  const teamSelected = state.team_id !== "";
-  const matchSelected = state.match_id !== "";
-  const gameSelected = state.game_id !== "";
+const Content = () => {
+  const context = useContext(appContext)
+  const teamSelected = context.state.team_id !== "";
+  const matchSelected = context.state.match_id !== "";
+  const gameSelected = context.state.game_id !== "";
   // const content1 = (<div>Graphs about the Team</div>)
   
   return (
     <>
-      <TeamChooser state={state}/>
-      {teamSelected && <TeamTimeline state={state}/>}
-      {teamSelected && <TeamCard state = {state}/>}
-      {matchSelected && <VersusContainer state={state}/>}
-      {matchSelected && <MatchTimeline state={state}/>}
+      <TeamChooser/>
+      {teamSelected && <TeamTimeline />}
+      {teamSelected && <TeamCard/>}
+      {matchSelected && <VersusContainer/>}
+      {matchSelected && <MatchTimeline />}
       {gameSelected && <div>BRAVO, VOUS AVEZ SELECTIONNÉ UNE GAME!</div>}
     </>
   )

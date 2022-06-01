@@ -149,10 +149,10 @@ function drawTimeline(domElement, data, dispatcher) {
 
 }
 
-export const TeamTimeline = ({state}) => {
+export const TeamTimeline = () => {
     const context = useContext(appContext);
-
-    var matches = getTeam(state.team_id).matches;
+    
+    var matches = getTeam(context.state.team_id).matches;
 
     const data = {
         points: [],
@@ -185,10 +185,11 @@ export const TeamTimeline = ({state}) => {
     )
 }
 
-export const MatchTimeline = ({state}) => {
+export const MatchTimeline = () => {
     const context = useContext(appContext);
     
-    var match = getTeamMatch(state.team_id, state.match_id)
+    
+    var match = getTeamMatch(context.state.team_id, context.state.match_id)
     var games = match.games;
     
     const data = {

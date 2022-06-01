@@ -1,10 +1,11 @@
+import React, { useEffect, useState, useContext } from 'react';
+import { appContext } from './App';
 import { Typography } from '@mui/material';
-import React from 'react'
 import './Header.css';
 import { ThemeProvider, useTheme } from '@mui/material/styles';
 // import {theme} from './App'
 
-const Header = ({state}) => {
+const Header = () => {
   // const theme = useTheme();
   return (
     <div className = "Header">
