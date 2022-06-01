@@ -16,7 +16,7 @@ const Recap = (props) => {
                     </ListItem>
                     <Divider variant="middle" component="li" />
                     <ListItem>
-                    Number of shots : {data.core_shots}
+                    Number of shots : {data.core_shots.toFixed(2)}
                     </ListItem>
                     <Divider variant="middle" component="li" />
                     <ListItem>
