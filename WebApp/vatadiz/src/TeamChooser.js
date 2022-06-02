@@ -78,7 +78,7 @@ function drawTeamChooser(domElement, data, dispatcher){
                         .attr("height", logoAttrs.height)
                         .attr("x", logoAttrs.x)
                         .attr("y", logoAttrs.y)
-                        .style("opacity", 0)
+                        .style("opacity", 0.5)
                         .attr("filter", "url(#blur)"),
         update => update.on("mouseover", mouseover)
                     .on("click", mouseclick)

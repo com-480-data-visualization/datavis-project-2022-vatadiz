@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useContext } from 'react'
 import * as d3 from 'd3';
 import { interpolatePath } from 'd3-interpolate-path';
 import { appContext } from './App';
-import { getTeam, getTeamMatch, computeGameMetric, computeMatchMetric} from './ProcessedDataset'
+import { getTeam, getTeamMatch, computeGameMetric, computeMatchMetric, getTeamIcon} from './ProcessedDataset'
 
 function drawTimeline(domElement, data, dispatcher) {
     var chart = d3.select(domElement);
@@ -14,8 +14,8 @@ function drawTimeline(domElement, data, dispatcher) {
 
     const baseTransi = d3.transition().duration(350)
     
-    const winColor = "#2678c9"
-    const lossColor = "#0c1117"
+    const winColor = "#7fb5eb"
+    const lossColor = "#515b5c"
     const chartWidth = chart.attr("viewBox").split(" ")[2] - 0;
     const chartHeight = chart.attr("viewBox").split(" ")[3] - 0;
     
@@ -30,7 +30,7 @@ function drawTimeline(domElement, data, dispatcher) {
     .range([yRange.up, yRange.down]);
     
     const timelineProperties = {y: uiy(80)};
-    const circleProperties = {y: timelineProperties.y + 20};
+    const circleProperties = {y: timelineProperties.y + 30};
     const tickProperties = {width: 0.5, height: chartHeight*0.8, opacity: 0.6};
     const separatorProperties = {y1:timelineProperties.y + uiy(3), y2: uiy(0)}
 
@@ -56,7 +56,6 @@ function drawTimeline(domElement, data, dispatcher) {
             update => update,
             exit => exit.remove()
     ).transition(baseTransi).attr("opacity", 1);
-
 
     if (data.separation >= 0){
         // Playoff/ groupStages separator
@@ -142,8 +141,7 @@ function drawTimeline(domElement, data, dispatcher) {
             enter => enter
                 .append("circle")
                 .attr('class', data.eventType + "Event")
-                .attr("r", 10)
-                .attr("height", 30)
+                .attr("r", 22)
                 .attr("cx", d => x(d.number))
                 .attr("cy", circleProperties.y + 60)
                 .attr("fill", d => d.won ? winColor : lossColor)
@@ -158,6 +156,27 @@ function drawTimeline(domElement, data, dispatcher) {
                     .style("opacity", 0)
                     .remove()
     ).transition(baseTransi).attr("cy", circleProperties.y).style("opacity", 0.9)
+
+    if (data.eventType === "Match"){
+            chart.selectAll("image."+ data.eventType + "Event").data(data.points, d => d.id + d.opponentIcon)
+                .join(
+                    enter => enter
+                        .append("svg:image")
+                        .attr('class', data.eventType + "Event")
+                        .attr('xlink:href', d => d.opponentIcon)
+                        .attr("width", 30)
+                        .style("opacity", 0)
+                        .attr("pointer-events", "none")
+                        .style("mix-blend-mode", "soft-light")
+                        .attr("x", d => x(d.number) - 15)
+                        .attr("y", circleProperties.y + 60),
+                    update => update.transition(baseTransi).attr("x", d => x(d.number) - 15),
+                    exit => exit.transition(baseTransi)
+                            .attr("y", circleProperties.y + 60)
+                            .style("opacity", 0)
+                            .remove()
+            ).transition(baseTransi).attr("y", circleProperties.y - 15).style("opacity", 0.9)
+    }
     // For the Rounds
         
     // var valueline = d3
@@ -206,7 +225,8 @@ export const TeamTimeline = () => {
                      number: i,
                      won: match[match.selected_team].winner,
                      metric: computeMatchMetric(match, match.selected_team),
-                     interactionType: "select_match_id"};
+                     interactionType: "select_match_id",
+                     opponentIcon: getTeamIcon(match[match.opposite_team].team_name)};
         if (data.separation < 0 && match.stage === "Playoffs")
             data.separation = i - 0.5
         data.points.push(entry);

@@ -57,3 +57,11 @@ export function computeGameMetric(game, selected_team){
 }
 
 
+export function getTeamLogo(team_name){
+    return require("" + `./data/team_logos/${team_name.replace(" ", "_").toLowerCase()}.png`);
+}
+
+export function getTeamIcon(team_name){
+    return require("" + `./data/team_logos/${team_name.replace(" ", "_").toLowerCase()}_icon.png`);
+}
+
