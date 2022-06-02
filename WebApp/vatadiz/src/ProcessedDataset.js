@@ -1,67 +1,96 @@
-import wmajor from "./data/winter_major_data_v2.json"
+import wmajor from "./data/winter_major_data_v3.json"
 
-export var teamsMinimalist = wmajor.teams.map(
-    x => { var a = {};
-        a["team_id"] = x.team_id; 
-        a["team_name"] = x.team_name
-        return a
+const objectMap2Map = (obj, fn) =>
+  Object.fromEntries(
+    Object.entries(obj).map(
+      ([k, v], i) => [k, fn(v, k, i)]
+    )
+  )
+
+
+export var teamsMinimalist = Object.values(wmajor.teams).map((v, k) => { 
+    return {team_id: v.team_id, team_name: v.team_name, team_region: v.team_region}
 });
 
 export function getTeam(team_id) {
-    var i = 0;
-    while (i < teamsMinimalist.length && teamsMinimalist[i].team_id !== team_id) i++;
-    if (i < teamsMinimalist.length)
-        return wmajor.teams[i];
-    else{
-        console.log("THIS TEAM ID DOES NOT EXIST");
-        return undefined;
-    }
+    return wmajor.teams[team_id]
 }
 
-export function getMatch(matches, match_id) {
-    var i = 0;
-    while (i < matches.length && matches[i].match_id !== match_id) i++;
-    if (i < matches.length)
-        return matches[i];
-    else{
-        console.log("THIS MATCH ID DOES NOT EXIST");
-        return undefined;
-    }
+export function getMatch(match_id) {
+    return wmajor.matches[match_id]
 }
 
-export function getGame(games, game_id) {
-    var i = 0;
-    while (i < games.length && games[i].game_id !== game_id) i++;
-    if (i < games.length)
-        return games[i];
-    else{
-        console.log("THIS GAME ID DOES NOT EXIST");
-        return undefined;
-    }
+export function getMatches(match_ids) {
+    return match_ids.map(mid => wmajor.matches[mid])
 }
 
-export function getTeamMatch(team_id, match_id){
-    return getMatch(getTeam(team_id).matches, match_id);
+export function getTeamMatches(team_id) {
+    return wmajor.teams[team_id].matches.map(gid => wmajor.matches[gid])
 }
 
-export function getTeamGame(team_id, game_id){
-    return getGame(getTeam(team_id).games, game_id);
+export function getGame(game_id) {
+    return wmajor.game[game_id]
 }
 
-export function computeMatchMetric(match, selected_team){
-    return match[selected_team].positioning_time_in_front_ball;
+export function getGames(game_ids) {
+    return game_ids.map(gid => wmajor.games[gid])
 }
 
-export function computeGameMetric(game, selected_team){
-    return game[selected_team].positioning_time_in_front_ball;
+export function getMatchGames(match_id) {
+    return wmajor.matches[match_id].games.map(gid => wmajor.games[gid])
+}
+
+export function getTeamGames(team_id) {
+    return wmajor.teams[team_id].games.map(gid => wmajor.games[gid])
+}
+
+export function getOppositeTeamID(event, team_id){
+    const tn = event[team_id]
+    if (tn[tn.length - 1] == 1)
+        return event.team2.team_id
+    else
+        return event.team1.team_id
+}
+
+export function getOppositeTeamInfo(event, team_id){
+    const tn = event[team_id]
+    if (tn[tn.length - 1] == 1)
+        return event.team2
+    else
+        return event.team1
 }
 
 
-export function getTeamLogo(team_name){
+export function computeTeamMetric(team_id){
+    const team_stats = wmajor.teams[team_id].game_stats_average
+    return team_stats.positioning_time_in_front_ball_normalized;
+}
+
+export function computeTeamMatchMetric(match, team_id){
+    const team_match_info = match[match[team_id]]
+    return team_match_info.positioning_time_in_front_ball_normalized;
+}
+
+export function computeTeamGameMetric(game, team_id){
+    const team_game_info = game[game[team_id]]
+    return team_game_info.positioning_time_in_front_ball_normalized;
+}
+
+
+export function getTeamLogo(team_id){
+    const team_name = wmajor.teams[team_id].team_name;
     return require("" + `./data/team_logos/${team_name.replace(" ", "_").toLowerCase()}.png`);
 }
 
-export function getTeamIcon(team_name){
+export function getTeamIcon(team_id){
+    const team_name = wmajor.teams[team_id].team_name;
     return require("" + `./data/team_logos/${team_name.replace(" ", "_").toLowerCase()}_icon.png`);
 }
 
+export function getOppositeTeamLogo(event, team_id){
+    return getTeamLogo(getOppositeTeamID(event, team_id)); 
+}
+
+export function getOppositeTeamIcon(event, team_id){
+    return getTeamIcon(getOppositeTeamID(event, team_id)); 
+}

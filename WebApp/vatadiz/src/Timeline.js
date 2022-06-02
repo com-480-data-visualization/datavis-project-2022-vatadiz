@@ -2,7 +2,7 @@ import React, { useRef, useLayoutEffect, useContext, useEffect } from 'react'
 import * as d3 from 'd3';
 import { interpolatePath } from 'd3-interpolate-path';
 import { appContext } from './App';
-import { getTeam, getTeamMatch, computeGameMetric, computeMatchMetric, getTeamIcon} from './ProcessedDataset'
+import * as wmrlcs from './ProcessedDataset'
 import {motion} from "framer-motion"
 
 function drawTimeline(domElement, data, dispatcher) {
@@ -25,11 +25,11 @@ function drawTimeline(domElement, data, dispatcher) {
     const yRange = {down:0.95*chartHeight, up: 0.05*chartHeight}
     
     var uix = d3.scaleLinear()
-    .domain([0, 100])
-    .range([xRange.left, xRange.right]);
+        .domain([0, 100])
+        .range([xRange.left, xRange.right]);
     var uiy = d3.scaleLinear()
-    .domain([0, 100])
-    .range([yRange.up, yRange.down]);
+        .domain([0, 100])
+        .range([yRange.up, yRange.down]);
     
     const timelineProperties = {y: uiy(80)};
     const circleProperties = {y: timelineProperties.y + 30, color: d => d.eventHasProblem ? problemColor : d.won ? winColor : lossColor};
@@ -214,8 +214,8 @@ function drawTimeline(domElement, data, dispatcher) {
 
 export const TeamTimeline = () => {
     const context = useContext(appContext);
-    
-    var matches = getTeam(context.state.team_id).matches;
+    const tid = context.state.team_id;
+    var matches = wmrlcs.getTeamMatches(tid);
     const myRef = useRef(null)
     const data = {
         points: [],
@@ -227,12 +227,13 @@ export const TeamTimeline = () => {
     })
     var i = 0;
     matches.forEach(match => {
+        
         var entry = {id: match.match_id,
                      number: i,
-                     won: match[match.selected_team].winner,
-                     metric: computeMatchMetric(match, match.selected_team),
+                     won: match[match[tid]].winner,
+                     metric: wmrlcs.computeTeamMatchMetric(match, tid),
                      interactionType: "select_match_id",
-                     opponentIcon: getTeamIcon(match[match.opposite_team].team_name),
+                     opponentIcon: wmrlcs.getOppositeTeamIcon(match, tid),
                      eventHasProblem: false};
         if (data.separation < 0 && match.stage === "Playoffs")
             data.separation = i - 0.5
@@ -263,10 +264,9 @@ export const TeamTimeline = () => {
 export const MatchTimeline = () => {
     const context = useContext(appContext);
     
-    
-    var match = getTeamMatch(context.state.team_id, context.state.match_id)
-    var games = match.games;
-    
+    const tid = context.state.team_id;
+    var games = wmrlcs.getMatchGames(context.state.match_id);
+
     const data = {
         points: [],
         separation: -1,
@@ -277,18 +277,17 @@ export const MatchTimeline = () => {
     games.forEach(game => {
         var entry = {id: game.game_id,
                     number: i,
-                    won: game.technical_problems ? false : game[match.selected_team].winner,
+                    won: game.technical_problems ? false : game[game[tid]].winner,
                     metric: 0,
                     interactionType: "select_game_id",
                     eventHasProblem: game.technical_problems};
         if (!game.technical_problems)
-            entry["metric"] = computeGameMetric(game, match.selected_team)
+            entry["metric"] = wmrlcs.computeTeamGameMetric(game, tid)
                      
                      
         data.points.push(entry);
         i++;
     })
-    console.log(data.points)
 
 
     useLayoutEffect(

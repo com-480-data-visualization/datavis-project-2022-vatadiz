@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { appContext } from './App';
 import "./VersusContainer.css"
-import {getTeamMatch} from './ProcessedDataset'
+import * as wmrlcs from './ProcessedDataset'
 
 function teamColumn(team){
     return (
@@ -13,15 +13,15 @@ function teamColumn(team){
 }
 export default function VersusContainer() {
     const context = useContext(appContext)
-    const match = getTeamMatch(context.state.team_id, context.state.match_id)
+    const match = wmrlcs.getMatch(context.state.match_id)
 
     return (
         <div>
             {/* <h2>{game.name}</h2> */}
             
             <div className="row">
-                {teamColumn(match[match.selected_team])}
-                {teamColumn(match[match.opposite_team])}
+                {teamColumn(match[match[context.state.team_id]])}
+                {teamColumn(wmrlcs.getOppositeTeamInfo(match, context.state.team_id))}
             </div>
         </div>
 
