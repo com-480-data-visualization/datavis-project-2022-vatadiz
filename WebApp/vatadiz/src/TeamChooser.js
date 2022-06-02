@@ -79,7 +79,10 @@ function drawTeamChooser(domElement, data, dispatcher){
                         .attr("x", logoAttrs.x)
                         .attr("y", logoAttrs.y)
                         .style("opacity", 0.5)
-                        .attr("filter", "url(#blur)"),
+                        .attr("filter", "url(#blur)")
+                        .on("mouseover", mouseover)
+                        .on("click", mouseclick)
+                        .on("mouseout", mouseout),
         update => update.on("mouseover", mouseover)
                     .on("click", mouseclick)
                     .on("mouseout", mouseout)
@@ -90,9 +93,6 @@ function drawTeamChooser(domElement, data, dispatcher){
                     }),
         exit => exit.remove()
     );
-
-    
-
     
 }
 

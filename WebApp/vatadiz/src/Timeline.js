@@ -16,6 +16,7 @@ function drawTimeline(domElement, data, dispatcher) {
     
     const winColor = "#7fb5eb"
     const lossColor = "#515b5c"
+    const problemColor = "#e8c113"
     const chartWidth = chart.attr("viewBox").split(" ")[2] - 0;
     const chartHeight = chart.attr("viewBox").split(" ")[3] - 0;
     
@@ -30,7 +31,7 @@ function drawTimeline(domElement, data, dispatcher) {
     .range([yRange.up, yRange.down]);
     
     const timelineProperties = {y: uiy(80)};
-    const circleProperties = {y: timelineProperties.y + 30};
+    const circleProperties = {y: timelineProperties.y + 30, color: d => d.eventHasProblem ? problemColor : d.won ? winColor : lossColor};
     const tickProperties = {width: 0.5, height: chartHeight*0.8, opacity: 0.6};
     const separatorProperties = {y1:timelineProperties.y + uiy(3), y2: uiy(0)}
 
@@ -144,13 +145,15 @@ function drawTimeline(domElement, data, dispatcher) {
                 .attr("r", 22)
                 .attr("cx", d => x(d.number))
                 .attr("cy", circleProperties.y + 60)
-                .attr("fill", d => d.won ? winColor : lossColor)
-                .on("mouseover", mouseover)
+                .attr("fill", circleProperties.color)
                 .style("opacity", 0)
+                .on("mouseover", mouseover)
                 // .on("mousemove", mousemove)
                 .on("mouseleave", mouseleave)
                 .on("click", mouseclick),
-            update => update.transition(baseTransi).attr("cx", d => x(d.number)),
+            update => update.transition(baseTransi)
+                .attr("cx", d => x(d.number))
+                .attr("fill", circleProperties.color),
             exit => exit.transition(baseTransi)
                     .attr("cy", circleProperties.y + 60)
                     .style("opacity", 0)
@@ -226,7 +229,8 @@ export const TeamTimeline = () => {
                      won: match[match.selected_team].winner,
                      metric: computeMatchMetric(match, match.selected_team),
                      interactionType: "select_match_id",
-                     opponentIcon: getTeamIcon(match[match.opposite_team].team_name)};
+                     opponentIcon: getTeamIcon(match[match.opposite_team].team_name),
+                     eventHasProblem: false};
         if (data.separation < 0 && match.stage === "Playoffs")
             data.separation = i - 0.5
         data.points.push(entry);
@@ -263,15 +267,22 @@ export const MatchTimeline = () => {
         eventType: "Game"
     }
     var i = 0;
+    
     games.forEach(game => {
         var entry = {id: game.game_id,
-                     number: i,
-                     won: game[match.selected_team].winner,
-                     metric: computeGameMetric(game, match.selected_team),
-                     interactionType: "select_game_id"};
+                    number: i,
+                    won: game.technical_problems ? false : game[match.selected_team].winner,
+                    metric: 0,
+                    interactionType: "select_game_id",
+                    eventHasProblem: game.technical_problems};
+        if (!game.technical_problems)
+            entry["metric"] = computeGameMetric(game, match.selected_team)
+                     
+                     
         data.points.push(entry);
         i++;
     })
+    console.log(data.points)
 
 
     useLayoutEffect(
