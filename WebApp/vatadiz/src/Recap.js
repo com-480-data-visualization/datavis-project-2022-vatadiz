@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent , Typography, List, ListItem} from '@mui/material'
+import { Card, CardContent , List, ListItem} from '@mui/material'
 import Divider from '@mui/material/Divider';
 
 const Recap = (props) => {
