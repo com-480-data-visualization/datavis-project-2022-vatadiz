@@ -16,10 +16,10 @@ const Content = () => {
     <>
       <TeamChooser />
       <Grid container direction = "row">
-        <Grid item xs = {7}>
+        <Grid item xs = {8}>
           {teamSelected && <TeamTimeline />}
         </Grid>
-        <Grid item xs = {5}>
+        <Grid item xs = {4}>
           {teamSelected && <TeamCard />}
         </Grid>
       </Grid>

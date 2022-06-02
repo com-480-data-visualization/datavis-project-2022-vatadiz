@@ -9,33 +9,33 @@ function drawTimeline(domElement, data, dispatcher) {
     
     chart
         .classed("svg-content-responsive", true)
-        .attr("viewBox", "0 0 1000 200")
+        .attr("viewBox", "0 0 1000 300")
         .attr("preserveAspectRatio", "xMidYMid slice")
 
-    const triangle = d3.symbol().type(d3.symbolTriangle).size(250)
     const baseTransi = d3.transition().duration(350)
-    const middleBarLength = 100
-    const tickProperties = {width: 2, height: 20};
     
-    const winColor = "darkgreen"
-    const lossColor = "darkred"
+    const winColor = "#2678c9"
+    const lossColor = "#0c1117"
     const chartWidth = chart.attr("viewBox").split(" ")[2] - 0;
     const chartHeight = chart.attr("viewBox").split(" ")[3] - 0;
     
     const xRange = {left:0.05*chartWidth, right: 0.95*chartWidth};
     const yRange = {down:0.95*chartHeight, up: 0.05*chartHeight}
-
+    
     var uix = d3.scaleLinear()
-                .domain([0, 100])
-                .range([xRange.left, xRange.right]);
+    .domain([0, 100])
+    .range([xRange.left, xRange.right]);
     var uiy = d3.scaleLinear()
-                .domain([0, 100])
-                .range([yRange.up, yRange.down]);
-
+    .domain([0, 100])
+    .range([yRange.up, yRange.down]);
+    
     const timelineProperties = {y: uiy(80)};
+    const circleProperties = {y: timelineProperties.y + 20};
+    const tickProperties = {width: 0.5, height: chartHeight*0.8, opacity: 0.6};
+    const separatorProperties = {y1:timelineProperties.y + uiy(3), y2: uiy(0)}
 
     var x = d3.scaleLinear()
-                .domain([-0.5, data.points.length])
+                .domain([-0.5, data.points.length-0.45])
                 .range([xRange.left, xRange.right]);
     var y = d3.scaleLinear()
                 .domain([0, d3.max(data.points.map(d => d.metric))])
@@ -48,7 +48,7 @@ function drawTimeline(domElement, data, dispatcher) {
         .join(
             enter => enter.append("line")
                         .attr('class', "TimelineAxis")
-                        .style("stroke", "black").style("stroke-width", 5)
+                        .style("stroke", "black").style("stroke-width", 2)
                         .attr("x1", xRange.left).attr("y1", timelineProperties.y)
                         .attr("x2", xRange.right).attr("y2", timelineProperties.y)
                         .style("backggroupStage-color", "black")
@@ -60,31 +60,23 @@ function drawTimeline(domElement, data, dispatcher) {
 
     if (data.separation >= 0){
         // Playoff/ groupStages separator
-        chart.selectAll("line.Separator").data([0])
+        chart.selectAll("line.Separator").data([0,1])
             .join(
                 enter => enter.append("line")
                             .attr('class', "Separator")
-                            .style("stroke", "darkgrey").style("stroke-width", 3)
+                            .style("stroke", "black").style("stroke-width", 2)
+                            .style("opacity", 0.6)
                             .attr("y1", uiy(110)).attr("y2", uiy(110))
                             .attr("x1", x(data.separation))
                             .attr("x2", x(data.separation)),
                 update => update.
                             transition(baseTransi)
-                            .attr("x1", x(data.separation))
-                            .attr("x2", x(data.separation)),
+                            .attr("x1", d => x(data.separation)+ d*3)
+                            .attr("x2", d => x(data.separation)+ d*3),
                 exit => exit.remove()
-        ).transition(baseTransi).attr("y1", uiy(50 - middleBarLength / 2)).attr("y2", uiy(50 + middleBarLength / 2))
+        ).transition(baseTransi).attr("y1", separatorProperties.y1).attr("y2", separatorProperties.y2);
     }
-    // timeline arrow tip 
     
-    // chart.append('svg')
-    //     .attr('width', 50).attr('height', 50)
-    //     .attr("x",xRange.right).attr("y", timelineProperties.y - 8)
-    //     .append('path')
-    //     .attr("d", triangle)
-    //     .style("fill", "black")
-    //     .attr('transform', "translate(0,8 ) rotate(90)")
-
     // And now the tooltip !
     // var Tooltip = d3.select('body')
     //     .append("div")
@@ -101,8 +93,8 @@ function drawTimeline(domElement, data, dispatcher) {
         //     .transition(50)
         //     .style("opacity", 1)
         d3.select(this)
-            .style("stroke", "black")
-            .style("stroke-width", 3)
+            .style("stroke", "white")
+            .style("stroke-width", 2)
             .style("opacity", 1)
     }
 
@@ -137,12 +129,12 @@ function drawTimeline(domElement, data, dispatcher) {
                 .attr("width", tickProperties.width).attr("height", tickProperties.height)
                 .attr("opacity", 0)
                 .attr("x", d => x(d.number))
-                .attr("y", timelineProperties.y - tickProperties.height/2),
+                .attr("y", timelineProperties.y - tickProperties.height * 0.9),
             update => update.transition(baseTransi).attr("x", d => x(d.number)),
             exit => exit.transition(baseTransi)
                 .attr("opacity", 0)
                 .remove()
-    ).transition(baseTransi).attr("opacity", 1)
+    ).transition(baseTransi).attr("opacity", tickProperties.opacity)
     
     //// Win-loss Circles
     chart.selectAll("circle."+ data.eventType + "Event").data(data.points, d => d.id)
@@ -153,35 +145,47 @@ function drawTimeline(domElement, data, dispatcher) {
                 .attr("r", 10)
                 .attr("height", 30)
                 .attr("cx", d => x(d.number))
-                .attr("cy", timelineProperties.y + tickProperties.height + 60)
+                .attr("cy", circleProperties.y + 60)
                 .attr("fill", d => d.won ? winColor : lossColor)
                 .on("mouseover", mouseover)
+                .style("opacity", 0)
                 // .on("mousemove", mousemove)
                 .on("mouseleave", mouseleave)
                 .on("click", mouseclick),
             update => update.transition(baseTransi).attr("cx", d => x(d.number)),
             exit => exit.transition(baseTransi)
-                    .attr("cy", timelineProperties.y + tickProperties.height + 60)
+                    .attr("cy", circleProperties.y + 60)
+                    .style("opacity", 0)
                     .remove()
-    ).transition(baseTransi).attr("cy", timelineProperties.y + tickProperties.height)
+    ).transition(baseTransi).attr("cy", circleProperties.y).style("opacity", 0.9)
     // For the Rounds
         
-    var valueline = d3.line()
+    // var valueline = d3
+    //     .line()
+    //     .x(d => x(d.number))
+    //     .y(d => y(d.metric))
+    //     .curve(d3.curveCatmullRom);
+
+    var valueline = d3
+        .area()
         .x(d => x(d.number))
-        .y(d => y(d.metric));
+        .y0(d => timelineProperties.y)
+        .y1(d => y(d.metric))
+        .curve(d3.curveCatmullRom);
     
     chart.selectAll("path." + data.eventType + "Metric").data([data.points])
         .join(
             enter => enter.append("path").attr("class", data.eventType + "Metric")
-                    .attr("stroke", "#2e2e2e")
+                    .attr("stroke", "#222222")
                     .attr("stroke-width", 0)
-                    .attr("fill", "none")
+                    .attr("fill", "#1d1d1d22")
+                    .attr("opacity", 0.4)
                     .attr("d", valueline),
             update =>  update.transition(baseTransi).attrTween('d',  function(d) {
                 return interpolatePath(d3.select(this).attr("d"), valueline(d)); 
               }),
             exit => exit.remove()
-    ).transition(baseTransi).attr("stroke-width", 2);
+    ).transition(baseTransi).attr("stroke-width", 0.4);
 
 }
 

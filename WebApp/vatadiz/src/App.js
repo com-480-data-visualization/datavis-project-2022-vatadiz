@@ -8,6 +8,12 @@ import Popup from './Popup';
 
 // https://mui.com/material-ui/customization/color/
 export const theme = createTheme({
+  typography:{
+    fontFamily: [
+      'Raleway',
+      'Jost'
+    ].join(",")
+  },
   palette: {
     mode: 'light',
     primary: {
@@ -66,7 +72,7 @@ function App() {
         <main>
           <Box className="App">
               <Header/>
-              <Popup/>  
+              {/* <Popup/>   */}
               <Content/>
           </Box>
         </main>
