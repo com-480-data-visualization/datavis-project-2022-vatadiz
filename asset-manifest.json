@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/datavis-project-2022-vatadiz/static/css/main.84be97dd.css",
-    "main.js": "/datavis-project-2022-vatadiz/static/js/main.088e2dbf.js",
+    "main.js": "/datavis-project-2022-vatadiz/static/js/main.c96e9246.js",
     "static/js/787.e7cde111.chunk.js": "/datavis-project-2022-vatadiz/static/js/787.e7cde111.chunk.js",
     "static/media/renegades.png": "/datavis-project-2022-vatadiz/static/media/renegades.2a39c2c4694ce7d8ff80.png",
     "static/media/dignitas.png": "/datavis-project-2022-vatadiz/static/media/dignitas.453bf1e33c1d3492cf8f.png",
@@ -34,11 +34,11 @@
     "static/media/nrg_esports_icon.png": "/datavis-project-2022-vatadiz/static/media/nrg_esports_icon.5702bfe9aba0ffe5c49e.png",
     "index.html": "/datavis-project-2022-vatadiz/index.html",
     "main.84be97dd.css.map": "/datavis-project-2022-vatadiz/static/css/main.84be97dd.css.map",
-    "main.088e2dbf.js.map": "/datavis-project-2022-vatadiz/static/js/main.088e2dbf.js.map",
+    "main.c96e9246.js.map": "/datavis-project-2022-vatadiz/static/js/main.c96e9246.js.map",
     "787.e7cde111.chunk.js.map": "/datavis-project-2022-vatadiz/static/js/787.e7cde111.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.84be97dd.css",
-    "static/js/main.088e2dbf.js"
+    "static/js/main.c96e9246.js"
   ]
 }
