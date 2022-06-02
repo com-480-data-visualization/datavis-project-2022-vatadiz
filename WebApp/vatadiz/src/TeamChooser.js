@@ -5,6 +5,7 @@ import * as d3 from 'd3'
 import { appContext } from './App';
 import { teamsMinimalist } from './ProcessedDataset';
 import { compose } from '@mui/system';
+import { select } from 'd3';
 
 
 function drawTeamChooser(domElement, data, dispatcher){
@@ -19,30 +20,14 @@ function drawTeamChooser(domElement, data, dispatcher){
         "opacity":(d) => d.team_id != data.state.team_id ? 1 : 0.6,
         'id': "team-logo"
     }
-
-    const domObject = d3.select(domElement)
-    // domObject.selectAll("*").remove();
-    var container = domObject.select("svg");
+ 
+    var container = d3.select(domElement);
     
-    if (container.empty())
-        container = domObject
-                            .append('svg')
-                            .attr("preserveAspectRatio", "xMidYMid slice")
-                            .attr("viewBox", "0 0 1000 100")
-                            .classed("svg-content-responsive", true)
+    container.attr("class", "TeamChooserSVG")
+            .attr("preserveAspectRatio", "xMidYMid slice")
+            .attr("viewBox", "0 0 1000 100")
+            .classed("svg-content-responsive", true)
     
-    
-
-    var logos = container.selectAll(".TeamLogo").data(data.teams);
-    logos.exit().remove()
-
-    logos.enter().append("svg:image").attr('class', "TeamLogo")
-        .attr("xlink:href", logoAttrs["xlink:href"])
-        .attr("width", logoAttrs.width)
-        .attr("height", logoAttrs.height)
-        .attr("x", logoAttrs.x)
-        .style("opacity", logoAttrs.opacity);
-
     var mouseover = function(e, d) {
         d3.select(this).transition()        
         .duration(200)      
@@ -58,23 +43,32 @@ function drawTeamChooser(domElement, data, dispatcher){
                     .attr("height", logoAttrs.height);
         }
     }
-    // console.log(data.state)
+    
     var mouseclick = function (e, d) {
         dispatcher({data:d.team_id, type: "select_team_id"})
     }
 
-    logos.on("mouseover", mouseover)
-        .on("click", mouseclick)
-        .on("mouseout", mouseout)
-        .each(function(d,i) {
-            if (d.team_id !== data.state.team_id){
-                d3.select(this).transition()        
-                        .duration(200)      
-                        .style("opacity", 1)  
-                        .attr("height", logoAttrs.height);
-                console.log(d3.select(this).empty())
-            }
-        });
+    var logos = container.selectAll(".TeamLogo").data(data.teams);
+    logos.join(
+        enter => enter.append("svg:image").attr('class', "TeamLogo")
+                        .attr("xlink:href", logoAttrs["xlink:href"])
+                        .attr("width", logoAttrs.width)
+                        .attr("height", logoAttrs.height)
+                        .attr("x", logoAttrs.x)
+                        .style("opacity", logoAttrs.opacity),
+        update => update.on("mouseover", mouseover)
+                    .on("click", mouseclick)
+                    .on("mouseout", mouseout)
+                    .each(function(d,i) {
+                        if (d.team_id !== data.state.team_id)
+                            d3.select(this).transition().duration(200)      
+                                    .style("opacity", 1).attr("height", logoAttrs.height);
+                    }),
+        exit => exit.remove()
+    );
+
+    
+
     
 }
 
@@ -85,11 +79,13 @@ const TeamChooser = () => {
     const data = {teams: teamsMinimalist,
                     state: context.state};
     useLayoutEffect(() => {
-        drawTeamChooser(".TeamChooser", data, context.dispatcher)
+        drawTeamChooser(".TeamChooserSVG", data, context.dispatcher)
     })
 
     return (
-        <div className="TeamChooser"></div>
+        <div className="TeamChooser">
+            <svg className="TeamChooserSVG"></svg>
+        </div>
     )
 
 }
