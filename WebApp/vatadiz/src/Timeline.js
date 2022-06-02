@@ -250,9 +250,9 @@ export const TeamTimeline = () => {
 
     return (
         <motion.div ref = {myRef} className="TeamTimeline"
-        initial = {{opacity: 0, x: -100}}
+        initial = {{opacity: 0, x: -200}}
         animate = {{opacity: 1, x: 0 }}
-        transition = {{duration: 0.6}}>
+        transition = {{duration: 0.7}}>
             <svg className="TeamTimelineSVG">
 
             </svg>
