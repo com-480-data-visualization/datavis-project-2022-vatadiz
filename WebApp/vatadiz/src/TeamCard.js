@@ -34,22 +34,22 @@ const TeamCard = () => {
                     <Grid container
                         direction="row"
                     >
-                        <Grid container direction="column" item xs={10}>
+                        <Grid container direction="column" item xs={9}>
                             <Grid item >
                                 <Typography variant="body2" color="text.secondary" align="left">
                                     {team_description}
                                 </Typography>
                             </Grid>
                             <Grid container direction="row" item xs={5}>
-                                <Grid item xs = {8}>
+                                <Grid item xs = {6}>
 
                                 </Grid>
-                                <Grid item xs={4} >
+                                <Grid item xs={6} >
                                     <Recap props={team.match_stats_average} />
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={3}>
                             <PositionPie />
 
                         </Grid>

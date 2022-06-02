@@ -4,6 +4,7 @@ import Content from './Content';
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Box, CssBaseline } from '@mui/material';
+import Popup from './Popup';
 
 // https://mui.com/material-ui/customization/color/
 export const theme = createTheme({
@@ -65,6 +66,7 @@ function App() {
         <main>
           <Box className="App">
               <Header/>
+              <Popup/>  
               <Content/>
           </Box>
         </main>
