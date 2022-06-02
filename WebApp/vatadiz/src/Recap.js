@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardContent , List, ListItem} from '@mui/material'
+import { Card, CardContent , List, ListItem, Typography} from '@mui/material'
 import Divider from '@mui/material/Divider';
 
 const Recap = (props) => {
@@ -7,19 +7,24 @@ const Recap = (props) => {
     return (
         <Card>
             <CardContent>
-            {/* <Typography>
-                You are : 
-            </Typography> */}
+            <Typography>
+                Average statistics per match
+            </Typography>
                 <List>
                     <ListItem>
-                         Average goals : {data.core_goals.toFixed(2)}
+                        Goals : {data.core_goals.toFixed(2)}
                     </ListItem>
                     <Divider variant="middle" component="li" />
                     <ListItem>
-                    Number of shots : {data.core_shots.toFixed(2)}
+                        Shots : {data.core_shots.toFixed(2)}
                     </ListItem>
                     <Divider variant="middle" component="li" />
                     <ListItem>
+                        Saves : {data.core_saves.toFixed(2)}
+                    </ListItem>
+                    <Divider variant="middle" component="li" />
+                    <ListItem>
+                        Assists : {data.core_assists.toFixed(2)}
                     </ListItem>
                 </List>
                 {/* <Typography>

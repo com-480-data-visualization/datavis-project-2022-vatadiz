@@ -222,9 +222,9 @@ export const TeamTimeline = () => {
         separation: -1,
         eventType: "Match"
     }
-    useEffect(() => {
-        myRef.current.scrollIntoView({ behavior: "smooth" })
-    })
+    // useEffect(() => {
+    //     myRef.current.scrollIntoView({ behavior: "smooth" })
+    // })
     var i = 0;
     matches.forEach(match => {
         

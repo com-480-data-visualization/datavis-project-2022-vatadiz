@@ -37,29 +37,26 @@ function drawTeamChooser(domElement, data, dispatcher){
     }
  
     
-    
-    var mouseover = function(e, d) {
-        d3.select(this).transition()        
-        .duration(200)      
-        .style("opacity", 1)
-        .attr("height", logoAttrs.height*growHeightFactor)
-        .attr("filter", null)
+    var effectOn = (d3o) => {
+        d3o.transition()        
+            .duration(200)      
+            .style("opacity", 1)
+            .attr("height", logoAttrs.height*growHeightFactor)
+            .attr("filter", null)
+            .style("mix-blend-mode", "normal")
     }
 
-    var mouseout = function(e, d) {
+    var effectOff = (d3o, d) => {
         if (d.team_id !== data.state.team_id){
-            d3.select(this).transition()        
+            d3o.transition()        
                     .duration(200)      
                     .style("opacity", logoAttrs.opacity)  
                     .attr("height", logoAttrs.height)
-                    .attr("filter", "url(#blur)");
+                    .attr("filter", "url(#blur)")
+                    .style("mix-blend-mode", "luminosity");
         }
     }
     
-    var mouseclick = function (e, d) {
-        dispatcher({data:d.team_id, type: "select_team_id"})
-    }
-
     var filter = container.append("defs")
                     .append("filter")
                     .attr("id", "blur")
@@ -68,26 +65,28 @@ function drawTeamChooser(domElement, data, dispatcher){
 
     var logos = container.selectAll(".TeamLogo").data(data.teams);
     
+    var mouseclick = function (e, d) { dispatcher({data:d.team_id, type: "select_team_id"}) };
+    var mouseover = function(e, d) { effectOn(d3.select(this)) };
+    var mouseout = function(e, d) { effectOff(d3.select(this), d)};
+    var resetEffect = function(d, i) { effectOff(d3.select(this), d)};
     logos.join(
         enter => enter.append("svg:image").attr('class', "TeamLogo")
+                        .style("mix-blend-mode", "luminosity")
                         .attr("xlink:href", logoAttrs["xlink:href"])
                         .attr("width", logoAttrs.width)
                         .attr("height", logoAttrs.height)
                         .attr("x", logoAttrs.x)
                         .attr("y", logoAttrs.y)
-                        .style("opacity", 0.5)
+                        .style("opacity", 0)
                         .attr("filter", "url(#blur)")
                         .on("mouseover", mouseover)
                         .on("click", mouseclick)
-                        .on("mouseout", mouseout),
+                        .on("mouseout", mouseout)
+                        .transition().duration(2000).style("opacity", logoAttrs.opacity),
         update => update.on("mouseover", mouseover)
                     .on("click", mouseclick)
                     .on("mouseout", mouseout)
-                    .each(function(d,i) {
-                        if (d.team_id !== data.state.team_id)
-                            d3.select(this).transition().duration(200)      
-                                    .style("opacity", logoAttrs.opacity).attr("height", logoAttrs.height).attr("filter", "url(#blur)");
-                    }),
+                    .each(resetEffect),
         exit => exit.remove()
     );
     
