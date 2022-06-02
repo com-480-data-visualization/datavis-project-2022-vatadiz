@@ -4,12 +4,7 @@ import { Card, CardHeader, CardContent, CardMedia, Typography, Grid, Box, Divide
 import { getTeam } from './ProcessedDataset'
 import PositionPie from './PositionPie'
 import Recap from './Recap'
-const team_description = `
-Dignitas, formerly known as Team Dignitas, is a professional esports organization based in Newark, New Jersey,
- founded by Michael "ODEE" O'Dell on 9 September 2003 as a merger of two top Battlefield 1942 clans. Dignitas was acquired by
-  the Philadelphia 76ers in September 2016. The team is best known for its League of Legends, Rocket League, and Counter-Strike: 
-  Global Offensive squads.
-`
+import team_descr from "./data/team_descr.json"
 const TeamCard = () => {
     const context = useContext(appContext)
     const team = getTeam(context.state.team_id)
@@ -37,7 +32,7 @@ const TeamCard = () => {
                         <Grid container direction="column" item xs={9}>
                             <Grid item >
                                 <Typography variant="body2" color="text.secondary" align="left">
-                                    {team_description}
+                                    {team_descr[team.team_name.replace(" ", "_").toLowerCase()]}
                                 </Typography>
                             </Grid>
                             <Grid container direction="row" item xs={5}>
