@@ -1,8 +1,9 @@
-import React, { useEffect, useLayoutEffect, useContext } from 'react'
+import React, { useRef, useLayoutEffect, useContext, useEffect } from 'react'
 import * as d3 from 'd3';
 import { interpolatePath } from 'd3-interpolate-path';
 import { appContext } from './App';
 import { getTeam, getTeamMatch, computeGameMetric, computeMatchMetric, getTeamIcon} from './ProcessedDataset'
+import {motion} from "framer-motion"
 
 function drawTimeline(domElement, data, dispatcher) {
     var chart = d3.select(domElement);
@@ -215,13 +216,15 @@ export const TeamTimeline = () => {
     const context = useContext(appContext);
     
     var matches = getTeam(context.state.team_id).matches;
-
+    const myRef = useRef(null)
     const data = {
         points: [],
         separation: -1,
         eventType: "Match"
     }
-
+    useEffect(() => {
+        myRef.current.scrollIntoView({ behavior: "smooth" })
+    })
     var i = 0;
     matches.forEach(match => {
         var entry = {id: match.match_id,
@@ -246,11 +249,14 @@ export const TeamTimeline = () => {
     )
 
     return (
-        <div className="TeamTimeline">
+        <motion.div ref = {myRef} className="TeamTimeline"
+        initial = {{opacity: 0, x: -100}}
+        animate = {{opacity: 1, x: 0 }}
+        transition = {{duration: 0.6}}>
             <svg className="TeamTimelineSVG">
 
             </svg>
-        </div>
+        </motion.div>
     )
 }
 

@@ -1,11 +1,8 @@
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
-import Select from '@mui/material/Select';
-import { MenuItem, Box, FormControl, InputLabel, requirePropFactory } from '@mui/material';
+import React, {  useLayoutEffect, useContext } from 'react';
 import * as d3 from 'd3'
 import { appContext } from './App';
 import { teamsMinimalist } from './ProcessedDataset';
-import { compose } from '@mui/system';
-import { select } from 'd3';
+import {motion} from "framer-motion"
 
 
 function drawTeamChooser(domElement, data, dispatcher){
@@ -107,9 +104,12 @@ const TeamChooser = () => {
     })
 
     return (
-        <div className="TeamChooser">
+        <motion.div className="TeamChooser"
+        initial = {{opacity: 0,}}
+        animate = {{opacity: 1,}}
+        transition = {{duration: 1}}>
             <svg className="TeamChooserSVG"></svg>
-        </div>
+        </motion.div>
     )
 
 }

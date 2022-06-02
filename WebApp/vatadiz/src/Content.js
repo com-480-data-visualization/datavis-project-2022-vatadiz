@@ -5,6 +5,7 @@ import VersusContainer from './VersusContainer';
 import TeamChooser from './TeamChooser';
 import TeamCard from './TeamCard';
 import { Grid } from '@mui/material';
+import {motion} from 'framer-motion'
 const Content = () => {
   const context = useContext(appContext)
   const teamSelected = context.state.team_id !== "";
@@ -14,12 +15,14 @@ const Content = () => {
 
   return (
     <>
+
       <TeamChooser />
-      <Grid container direction = "row">
-        <Grid item xs = {8}>
+      <Grid container direction = "row" alignItems = "center" spacing = {0}>
+        
+        <Grid item xs = {7}>
           {teamSelected && <TeamTimeline />}
         </Grid>
-        <Grid item xs = {4}>
+        <Grid item xs = {5}>
           {teamSelected && <TeamCard />}
         </Grid>
       </Grid>
