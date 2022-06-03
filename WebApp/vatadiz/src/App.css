@@ -53,6 +53,10 @@ font-family: 'Raleway', sans-serif; */
   width:70%;
 }
 
+.MetricChooser{
+  font-size: 15px;
+}
+
 .tooltip {
   position: absolute;
 }

@@ -6,6 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Box, CssBaseline } from '@mui/material';
 import Popup from './Popup';
 import { initialMetricFactors } from './InteractiveMetric';
+import MetricAccess from './MetricAccess';
 
 // https://mui.com/material-ui/customization/color/
 export const theme = createTheme({
@@ -49,7 +50,8 @@ function handleStateContext(state, action) {
         state.game_id = action.data
         break;
     case "select_metric_factor":
-      state.factors[action.data.entry] = action.data.factor
+      state.factors = action.data
+      console.log(state.factors)
       state.positiveSum = Object.values(state.factors).reduce((acc, v) => acc + (v >= 0 ? v : 0))
       state.negativeSum = Object.values(state.factors).reduce((acc, v) => acc + (v < 0 ? v : 0))
       return state;
@@ -64,6 +66,7 @@ const initialState = {
   team_id: "",
   match_id: "",
   game_id: "",
+  open_popup: true,
   factors: initialMetricFactors,
   positiveSum:  Object.values(initialMetricFactors).reduce((acc, v) => acc + (v >= 0 ? v : 0)),
   negativeSum:  Object.values(initialMetricFactors).reduce((acc, v) => acc + (v < 0 ? v : 0))
@@ -80,8 +83,9 @@ function App() {
           <main>
             <Box className="App">
               <Header/>
-              {/* <Popup/>   */}
+              <Popup/>  
               <Content/>
+              <MetricAccess/>
             </Box>
           </main>  
      </appContext.Provider>

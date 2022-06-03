@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { appContext } from './App';
-import { Card, CardHeader, CardContent, CardMedia, Typography, Grid, Box, Divider } from '@mui/material'
+import { Card, CardHeader, CardContent, CardMedia, Typography, Grid, Box, Divider, Tooltip } from '@mui/material'
 import * as wmrlcs from './ProcessedDataset'
 import PieChart from './PieChart'
 import Recap from './Recap'
@@ -26,6 +26,7 @@ const TeamCard = () => {
         >
         <Box display="inline-block" sx={{ width: '90%' }}>
             <Card>
+                <Tooltip title = {team_descr[team.team_name.replace(" ", "_").toLowerCase()]}>
                 <CardHeader
                     avatar={
                         <CardMedia
@@ -38,6 +39,7 @@ const TeamCard = () => {
                     title={team.team_name + " - " + team.team_region}
                 // subheader="September 14, 2016"
                 />
+                </Tooltip>
                 <Divider/>
                 <Leaderboard data={wmrlcs.teamsMinimalist.filter(d => d.team_region === team.team_region)}>
 
@@ -48,13 +50,6 @@ const TeamCard = () => {
                         direction="row"
                     >
                         <Grid container direction="column" item xs={9}>
-                            <Grid item >
-                                <Typography variant="body2" color="text.secondary" align="left">
-                                    <motion.div animate = {{fontSize: 30 }}>
-                                    {team_descr[team.team_name.replace(" ", "_").toLowerCase()]}
-                                    </motion.div>
-                                </Typography>
-                            </Grid>
                             <Grid item  >
                                     <Recap props={chosen_stats} />
                                 </Grid>

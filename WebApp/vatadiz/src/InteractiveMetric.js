@@ -20,7 +20,7 @@ export const initialMetricFactors = {
     // "ball_time_in_side_normalized": -0.4
 }
 
-const metricKeyName = s => s.slice(0, -11).replaceAll("_", " ").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+export const metricKeyName = s => s.slice(0, -11).replaceAll("_", " ").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
 
 export function computeStackedTeamMetric(team_id, event, state){
     const stats = wmrlcs.getTeamNormalizedStats(team_id, event)   
