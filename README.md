@@ -1,6 +1,6 @@
 # COM-480 Data Visualization Project - Team VataDiz
 # Milestone 3
-Please find our final WebApp at [this adress](https://com-480-data-visualization.github.io/datavis-project-2022-vatadiz/) and its associated git [here](https://github.com/com-480-data-visualization/datavis-project-2022-vatadiz/tree/main/WebApp/vatadiz), the screencast at [this adress]() and the associated report [here](https://github.com/com-480-data-visualization/datavis-project-2022-vatadiz/blob/main/VataDiz.pdf).
+Please find our final WebApp at [this adress](https://com-480-data-visualization.github.io/datavis-project-2022-vatadiz/) and its associated git [here](https://github.com/com-480-data-visualization/datavis-project-2022-vatadiz/tree/main/WebApp/vatadiz), the screencast at [this adress](https://github.com/com-480-data-visualization/datavis-project-2022-vatadiz/blob/main/VataDiz.mp4) and the associated report [here](https://github.com/com-480-data-visualization/datavis-project-2022-vatadiz/blob/main/VataDiz.pdf).
 # Milestone 2
 
 ## Our Project
