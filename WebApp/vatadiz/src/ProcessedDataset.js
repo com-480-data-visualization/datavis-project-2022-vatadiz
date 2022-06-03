@@ -6,10 +6,28 @@ const objectMap2Map = (obj, fn) =>
       ([k, v], i) => [k, fn(v, k, i)]
     )
   )
+  
 
+const rankings = {
+    "6020bc70f1e4807cc70023fb": 911,
+    "6020c2b7f1e4807cc702ac15": 1002,
+    "60b63cfdfec4a0857e7ba00c": 820,
+    "605aca6853a71a78eacbc155": 740,
+    "6020c1cdf1e4807cc7025d03": 681,
+    "6020bc70f1e4807cc70023a0": 951,
+    "6065dbab45122f213019c81f": 862,
+    "6020bc70f1e4807cc70023d9": 630,
+    "6020bc70f1e4807cc70023a5": 801,
+    "6020bc9bf1e4807cc70041b4": 590,
+    "6020bd98f1e4807cc700dc74": 721,
+    "6020bcd5f1e4807cc7006767": 871,
+    "6020bc70f1e4807cc70023e9": 750,
+    "6020bc70f1e4807cc7002389": 630,
+    "6020c1bef1e4807cc70258d0": 860
+}
 
 export var teamsMinimalist = Object.values(wmajor.teams).map((v, k) => { 
-    return {team_id: v.team_id, team_name: v.team_name, team_region: v.team_region}
+    return {team_id: v.team_id, team_name: v.team_name, team_region: v.team_region, team_score: rankings[v.team_id]}
 });
 
 export function getTeam(team_id) {

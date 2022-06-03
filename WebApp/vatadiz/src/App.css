@@ -48,6 +48,11 @@ font-family: 'Raleway', sans-serif; */
   vertical-align: baseline;
 }
 
+.Leaderboard{
+  margin:auto;
+  width:70%;
+}
+
 .tooltip {
   position: absolute;
 }
