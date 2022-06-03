@@ -1,9 +1,11 @@
 import React, { useRef, useLayoutEffect, useContext, useEffect } from 'react'
 import * as d3 from 'd3';
-import { interpolatePath } from 'd3-interpolate-path';
 import { appContext } from './App';
 import * as wmrlcs from './ProcessedDataset'
+import * as itrmetr from './InteractiveMetric';
 import {motion} from "framer-motion"
+import { drawTimelineAreaPlot, drawTimelineStackedAreaPlot } from './TimelinePlots';
+
 
 function drawTimeline(domElement, data, dispatcher) {
     var chart = d3.select(domElement);
@@ -31,19 +33,20 @@ function drawTimeline(domElement, data, dispatcher) {
         .domain([0, 100])
         .range([yRange.up, yRange.down]);
     
-    const timelineProperties = {y: uiy(80)};
-    const circleProperties = {y: timelineProperties.y + 30, color: d => d.eventHasProblem ? problemColor : d.won ? winColor : lossColor};
+    const timelineProperties = {y: uiy(70)};
+    const circleProperties = {y: timelineProperties.y + 50, color: d => d.eventHasProblem ? problemColor : d.won ? winColor : lossColor};
     const tickProperties = {width: 0.5, height: chartHeight*0.8, opacity: 0.6};
     const separatorProperties = {y1:timelineProperties.y + uiy(3), y2: uiy(0)}
 
     var x = d3.scaleLinear()
                 .domain([-0.5, data.points.length-0.45])
                 .range([xRange.left, xRange.right]);
-    var y = d3.scaleLinear()
-                .domain([0, d3.max(data.points.map(d => d.metric))])
-                .range([timelineProperties.y, uiy(5)]);
 
     
+    var y = d3.scaleLinear()
+                .domain([0, 0.7])
+                .range([timelineProperties.y, uiy(5)]);
+
 
     // timeline bar
     chart.selectAll("line.TimelineAxis").data([0])
@@ -57,7 +60,7 @@ function drawTimeline(domElement, data, dispatcher) {
                         .attr("opacity", 0),
             update => update,
             exit => exit.remove()
-    ).transition(baseTransi).attr("opacity", 1);
+    ).transition(baseTransi).attr("opacity", 0.5);
 
     if (data.separation >= 0){
         // Playoff/ groupStages separator
@@ -66,7 +69,7 @@ function drawTimeline(domElement, data, dispatcher) {
                 enter => enter.append("line")
                             .attr('class', "Separator")
                             .style("stroke", "black").style("stroke-width", 2)
-                            .style("opacity", 0.6)
+                            .style("opacity", 0.5)
                             .attr("y1", uiy(110)).attr("y2", uiy(110))
                             .attr("x1", x(data.separation))
                             .attr("x2", x(data.separation)),
@@ -181,34 +184,9 @@ function drawTimeline(domElement, data, dispatcher) {
                             .remove()
             ).transition(baseTransi).attr("y", circleProperties.y - 15).style("opacity", 0.9)
     }
-    // For the Rounds
-        
-    // var valueline = d3
-    //     .line()
-    //     .x(d => x(d.number))
-    //     .y(d => y(d.metric))
-    //     .curve(d3.curveCatmullRom);
 
-    var valueline = d3
-        .area()
-        .x(d => x(d.number))
-        .y0(d => timelineProperties.y)
-        .y1(d => y(d.metric))
-        .curve(d3.curveCatmullRom);
-    
-    chart.selectAll("path." + data.eventType + "Metric").data([data.points])
-        .join(
-            enter => enter.append("path").attr("class", data.eventType + "Metric")
-                    .attr("stroke", "#222222")
-                    .attr("stroke-width", 0)
-                    .attr("fill", "#1d1d1d22")
-                    .attr("opacity", 0.4)
-                    .attr("d", valueline),
-            update =>  update.transition(baseTransi).attrTween('d',  function(d) {
-                return interpolatePath(d3.select(this).attr("d"), valueline(d)); 
-              }),
-            exit => exit.remove()
-    ).transition(baseTransi).attr("stroke-width", 0.4);
+    // drawTimelineAreaPlot(chart, data, x, y, baseTransi)
+    drawTimelineStackedAreaPlot(chart, data, x, y, baseTransi)
 
 }
 
@@ -216,12 +194,13 @@ export const TeamTimeline = () => {
     const context = useContext(appContext);
     const tid = context.state.team_id;
     var matches = wmrlcs.getTeamMatches(tid);
-    const myRef = useRef(null)
+    const myRef = useRef(null);
     const data = {
         points: [],
         separation: -1,
+        factors: itrmetr.getMetricFactors(context.state),
         eventType: "Match"
-    }
+    };
     // useEffect(() => {
     //     myRef.current.scrollIntoView({ behavior: "smooth" })
     // })
@@ -231,7 +210,8 @@ export const TeamTimeline = () => {
         var entry = {id: match.match_id,
                      number: i,
                      won: match[match[tid]].winner,
-                     metric: wmrlcs.computeTeamMatchMetric(match, tid),
+                     metric: itrmetr.computeTeamMetric(tid, match, context.state),
+                     stackedMetric: itrmetr.computeStackedTeamMetric(tid, match, context.state),
                      interactionType: "select_match_id",
                      opponentIcon: wmrlcs.getOppositeTeamIcon(match, tid),
                      eventHasProblem: false};
@@ -269,6 +249,7 @@ export const MatchTimeline = () => {
 
     const data = {
         points: [],
+        factors: itrmetr.getMetricFactors(context.state),
         separation: -1,
         eventType: "Game"
     }
@@ -279,12 +260,14 @@ export const MatchTimeline = () => {
                     number: i,
                     won: game.technical_problems ? false : game[game[tid]].winner,
                     metric: 0,
+                    stackedMetric: [],
                     interactionType: "select_game_id",
                     eventHasProblem: game.technical_problems};
-        if (!game.technical_problems)
-            entry["metric"] = wmrlcs.computeTeamGameMetric(game, tid)
-                     
-                     
+        if (!game.technical_problems){
+            entry["metric"] = itrmetr.computeTeamMetric(tid, game, context.state);
+            entry["stackedMetric"] = itrmetr.computeStackedTeamMetric(tid, game, context.state);
+        }
+                              
         data.points.push(entry);
         i++;
     })

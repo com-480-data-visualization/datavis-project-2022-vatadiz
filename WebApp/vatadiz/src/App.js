@@ -5,6 +5,7 @@ import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Box, CssBaseline } from '@mui/material';
 import Popup from './Popup';
+import { initialMetricFactors } from './InteractiveMetric';
 
 // https://mui.com/material-ui/customization/color/
 export const theme = createTheme({
@@ -31,51 +32,58 @@ export const theme = createTheme({
   },
 })
   
-function handleContext(state, action) {
-  let newState = JSON.parse(JSON.stringify(state))
+function handleStateContext(state, action) {
+  state = JSON.parse(JSON.stringify(state))
   // console.log(state,action)
-  switch (action.type) {
+  switch(action.type) {
     case "select_team_id":
-      newState.team_id = action.data
-      newState.match_id = ""
-      newState.game_id = ""
+      state.team_id = action.data
+      state.match_id = ""
+      state.game_id = ""
       break;
     case "select_match_id":
-      newState.match_id = action.data
-      newState.game_id = ""
+      state.match_id = action.data
+      state.game_id = ""
       break;
     case "select_game_id":
-        newState.game_id = action.data
+        state.game_id = action.data
         break;
+    case "select_metric_factor":
+      state.factors[action.data.entry] = action.data.factor
+      state.positiveSum = Object.values(state.factors).reduce((acc, v) => acc + (v >= 0 ? v : 0))
+      state.negativeSum = Object.values(state.factors).reduce((acc, v) => acc + (v < 0 ? v : 0))
+      return state;
     default:
       break;
   }
-  return newState
+  return state
 }
 
-const initialeState = {
+
+const initialState = {
   team_id: "",
   match_id: "",
-  game_id: ""
+  game_id: "",
+  factors: initialMetricFactors,
+  positiveSum:  Object.values(initialMetricFactors).reduce((acc, v) => acc + (v >= 0 ? v : 0)),
+  negativeSum:  Object.values(initialMetricFactors).reduce((acc, v) => acc + (v < 0 ? v : 0))
 }
 
 const appContext = React.createContext()
 
-
 function App() {
-  const [state, dispatcher] = React.useReducer(handleContext, initialeState)
-  
+  const [state, dispatcher] = React.useReducer(handleStateContext, initialState)
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
       <appContext.Provider value={{ state, dispatcher }}>
-        <main>
-          <Box className="App">
+          <main>
+            <Box className="App">
               <Header/>
               {/* <Popup/>   */}
               <Content/>
-          </Box>
-        </main>
+            </Box>
+          </main>  
      </appContext.Provider>
     </ThemeProvider>
   );

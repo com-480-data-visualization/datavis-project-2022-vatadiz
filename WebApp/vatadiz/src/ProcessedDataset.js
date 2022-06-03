@@ -7,7 +7,10 @@ const objectMap2Map = (obj, fn) =>
     )
   )
 
-
+function filterObject(obj, callback) {
+    return Object.fromEntries(Object.entries(obj).
+        filter(([key, val]) => callback(key, val)));
+}
 export var teamsMinimalist = Object.values(wmajor.teams).map((v, k) => { 
     return {team_id: v.team_id, team_name: v.team_name, team_region: v.team_region}
 });
@@ -60,31 +63,25 @@ export function getOppositeTeamInfo(event, team_id){
         return event.team1
 }
 
-
-export function computeTeamMetric(team_id){
-    const team_stats = wmajor.teams[team_id].game_stats_average
-    return team_stats.positioning_time_in_front_ball_normalized;
+export function getTeamNormalizedStats(team_id, event){
+    var team_stats = {};
+    if (event === undefined)
+        team_stats = wmajor.teams[team_id].game_stats_average;
+    else
+        team_stats = event[event[team_id]];
+        
+    team_stats = filterObject(team_stats, (k,v) => JSON.stringify(k).includes("_normalized"))
+    return team_stats;
 }
-
-export function computeTeamMatchMetric(match, team_id){
-    const team_match_info = match[match[team_id]]
-    return team_match_info.positioning_time_in_front_ball_normalized;
-}
-
-export function computeTeamGameMetric(game, team_id){
-    const team_game_info = game[game[team_id]]
-    return team_game_info.positioning_time_in_front_ball_normalized;
-}
-
 
 export function getTeamLogo(team_id){
     const team_name = wmajor.teams[team_id].team_name;
-    return require("" + `./data/team_logos/${team_name.replace(" ", "_").toLowerCase()}.png`);
+    return require("" + `./data/team_logos/${team_name.replaceAll(" ", "_").toLowerCase()}.png`);
 }
 
 export function getTeamIcon(team_id){
     const team_name = wmajor.teams[team_id].team_name;
-    return require("" + `./data/team_logos/${team_name.replace(" ", "_").toLowerCase()}_icon.png`);
+    return require("" + `./data/team_logos/${team_name.replaceAll(" ", "_").toLowerCase()}_icon.png`);
 }
 
 export function getOppositeTeamLogo(event, team_id){

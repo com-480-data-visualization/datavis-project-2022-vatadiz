@@ -55,7 +55,7 @@ function drawPie(domElement, data) {
 
 }
 
-const PositionPie = ({data}) => {
+const PieChart = ({data}) => {
     useEffect(
         () => {
             drawPie(".PieChartSVG", data)
@@ -69,4 +69,4 @@ const PositionPie = ({data}) => {
     )
 }
 
-export default PositionPie
+export default PieChart

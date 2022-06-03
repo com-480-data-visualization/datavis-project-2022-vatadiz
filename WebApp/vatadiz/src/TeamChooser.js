@@ -69,6 +69,7 @@ function drawTeamChooser(domElement, data, dispatcher){
     var mouseover = function(e, d) { effectOn(d3.select(this)) };
     var mouseout = function(e, d) { effectOff(d3.select(this), d)};
     var resetEffect = function(d, i) { effectOff(d3.select(this), d)};
+    
     logos.join(
         enter => enter.append("svg:image").attr('class', "TeamLogo")
                         .style("mix-blend-mode", "luminosity")
