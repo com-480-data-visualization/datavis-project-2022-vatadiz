@@ -55,7 +55,7 @@ const Popup = () => {
             <ReactMarkdown>
               {text_content}
             </ReactMarkdown>
-            {/* <MetricChooser /> */}
+            <MetricChooser />
 
           </DialogContentText>
         </DialogContent>
