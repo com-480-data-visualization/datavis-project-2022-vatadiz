@@ -6,6 +6,8 @@ import PieChart from './PieChart'
 import Recap from './Recap'
 import team_descr from "./data/team_descr.json"
 import {motion} from "framer-motion"
+import Leaderboard from './Leaderboard';
+
 const TeamCard = () => {
     const context = useContext(appContext)
     const team = wmrlcs.getTeam(context.state.team_id)
@@ -36,6 +38,10 @@ const TeamCard = () => {
                     title={team.team_name + " - " + team.team_region}
                 // subheader="September 14, 2016"
                 />
+                <Divider/>
+                <Leaderboard data={wmrlcs.teamsMinimalist.filter(d => d.team_region === team.team_region)}>
+
+                </Leaderboard>
                 <Divider/>
                 <CardContent>
                     <Grid container
