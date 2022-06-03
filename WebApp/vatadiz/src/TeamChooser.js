@@ -6,7 +6,7 @@ import {motion} from "framer-motion"
 
 
 function drawTeamChooser(domElement, data, dispatcher){
-    console.log(teamsMinimalist)
+    // console.log(teamsMinimalist)
 
     var container = d3.select(domElement);
     

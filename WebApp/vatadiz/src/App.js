@@ -51,7 +51,6 @@ function handleStateContext(state, action) {
         break;
     case "select_metric_factor":
       state.factors = action.data
-      console.log(state.factors)
       state.positiveSum = Object.values(state.factors).reduce((acc, v) => acc + (v >= 0 ? v : 0))
       state.negativeSum = Object.values(state.factors).reduce((acc, v) => acc + (v < 0 ? v : 0))
       return state;
