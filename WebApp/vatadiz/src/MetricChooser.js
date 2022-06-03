@@ -55,7 +55,7 @@ const MetricChooser = () => {
                                         orientation="horizontal"
                                         style = {{color: color_dict[metric_name]}}
                                         step={0.01}
-                                        min={positive_dict[metric_name] === 1 ? 0.00001 : -1}
+                                        min={positive_dict[metric_name] === 1 ? -0.00001 : -1}
                                         max={positive_dict[metric_name] === 1 ? 1 : 0.000001}
                                         value={new_metric[metric_name]}
                                         onChange={(value, val2) => handleChange(metric_name, val2)}
