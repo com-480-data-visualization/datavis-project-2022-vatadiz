@@ -29,7 +29,7 @@ const Content = () => {
 
       {matchSelected && <VersusContainer />}
       {matchSelected && <MatchTimeline />}
-      {gameSelected && <div>BRAVO, VOUS AVEZ SELECTIONNÉ UNE GAME!</div>}
+      {/* {gameSelected && <div>BRAVO, VOUS AVEZ SELECTIONNÉ UNE GAME!</div>} */}
     </>
   )
 }
