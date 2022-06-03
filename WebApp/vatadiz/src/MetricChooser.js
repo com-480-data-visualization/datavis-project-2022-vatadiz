@@ -10,6 +10,10 @@ const MetricChooser = () => {
     const context = useContext(appContext)
     const [new_metric, setState] = useState(JSON.parse(JSON.stringify(context.state.factors)))
     const [open, setOpen] = useState(false)
+
+    const colors = ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]
+    const color_dict = {}
+    Object.keys(new_metric).forEach((metric_name, index) => color_dict[metric_name] = colors[index])
     const positive_dict = Object.keys(new_metric)
         .map(value => [value, new_metric[value] >= 0 ? 1 : -1])
         .reduce(function (map, obj) {
@@ -49,6 +53,7 @@ const MetricChooser = () => {
                                 <Grid item xs={5}>
                                     <Slider
                                         orientation="horizontal"
+                                        style = {{color: color_dict[metric_name]}}
                                         step={0.01}
                                         min={positive_dict[metric_name] === 1 ? 0.00001 : -1}
                                         max={positive_dict[metric_name] === 1 ? 1 : 0.000001}
