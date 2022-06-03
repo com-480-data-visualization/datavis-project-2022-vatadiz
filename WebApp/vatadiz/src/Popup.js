@@ -36,7 +36,7 @@ const Popup = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1}}
-      transition={{ duration: 3}}>
+      transition={{ duration: 3 }}>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -55,7 +55,7 @@ const Popup = () => {
             <ReactMarkdown>
               {text_content}
             </ReactMarkdown>
-            <MetricChooser />
+            {/* <MetricChooser /> */}
 
           </DialogContentText>
         </DialogContent>
